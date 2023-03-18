@@ -5,10 +5,12 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useAtom } from 'jotai';
 import { cartListAtom } from '../utils/atoms';
 import { CardType, SelectedCardType } from '../types/cardType';
+import CartAddIcon from '../assets/icons/CartAddIcon';
+import CartRemoveIcon from '../assets/icons/CartRemoveIcon';
 
 export default function CartsList() {
     const [cartsList, setCartsList] = useAtom<SelectedCardType[]>(cartListAtom)
-
+    const [selectedCartsList,] = useState()
     const renderItem = ({ item }: { item: SelectedCardType }) => <Cart item={item} />
 
     return cartsList.length > 0 ? <FlatList
@@ -22,8 +24,31 @@ interface CartProps {
     item: SelectedCardType
 }
 
-const Cart = ({ item }: CartProps) => (
-    <View style={styles.cartContainer}>
+
+const Cart = ({ item }: CartProps) => {
+    const [cartsList, setCartsList] = useAtom<SelectedCardType[]>(cartListAtom)
+
+    const updateCartCount = (item: SelectedCardType, count: number, cartsList: SelectedCardType[], setCartsList: (cartsList: SelectedCardType[]) => void) => {
+        const newCartsList = cartsList.map((cartItem) => {
+            if (cartItem.cardType.name === item.cardType.name) {
+                return { ...cartItem, cartCount: count };
+            }
+            return cartItem;
+        });
+        setCartsList(newCartsList);
+    };
+
+    const decreaseCartCount = (item: SelectedCardType, cartsList: SelectedCardType[], setCartsList: (cartsList: SelectedCardType[]) => void) => {
+        const newCartsList = cartsList.map((cartItem) => {
+            if (cartItem.cardType.name === item.cardType.name) {
+                return { ...cartItem, cartCount: cartItem.cartCount - 1 };
+            }
+            return cartItem;
+        });
+        setCartsList(newCartsList);
+    };
+
+    return <View style={styles.cartContainer}>
         <Image style={styles.cardImage} source={{ uri: item.cardType.images.small, width: wp(20), height: hp(14) }} />
         <View style={styles.midContainer}>
             <Text style={styles.cardName}>{item.cardType.name}</Text>
@@ -35,13 +60,39 @@ const Cart = ({ item }: CartProps) => (
             </View>
         </View>
         <View>
-            <Text style={styles.cartCountText}>{item.cartCount}</Text>
+            <View style={styles.cartCountContainer}>
+                <Text style={styles.cartCountText}>{item.cartCount}</Text>
+                <View style={styles.cartBtnContainer}>
+                    <TouchableOpacity onPress={() => {
+                        if (item.cartCount == item.cardType.set.total) {
+
+                        } else {
+                            const updatedCount = item.cartCount + 1;
+                            updateCartCount(item, updatedCount, cartsList, setCartsList);
+                            console.log(updatedCount);
+                        }
+                    }}>
+                        <CartAddIcon width={hp(2)} height={hp(2)} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        if (item.cartCount > 0) {
+                            const updatedCount = item.cartCount - 1;
+                            decreaseCartCount(item, cartsList, setCartsList);
+                            console.log(updatedCount);
+                        } else {
+
+                        }
+                    }}>
+                        <CartRemoveIcon width={hp(2)} height={hp(2)} />
+                    </TouchableOpacity>
+                </View>
+            </View>
             <Text style={styles.priceText}>price</Text>
 
             <Text style={styles.pricePerText}>${item.cardType.cardmarket.prices.averageSellPrice}</Text>
         </View>
     </View>
-);
+};
 
 const styles = StyleSheet.create({
     cartContainer: {
@@ -83,15 +134,22 @@ const styles = StyleSheet.create({
     cartCountText: {
         color: '#298BFD',
         fontFamily: 'Poppins-Bold',
-        marginBottom : hp(2)
+        marginBottom: hp(2),
+        marginRight : wp(2)
     },
-    priceText : {
-        color : '#1D1C1C',
-        fontFamily : 'Poppins-Regular'
+    priceText: {
+        color: '#1D1C1C',
+        fontFamily: 'Poppins-Regular'
 
     },
     pricePerText: {
         color: '#298BFD',
         fontFamily: 'Poppins-Bold'
     },
+    cartCountContainer: {
+        flexDirection: 'row'
+    },
+    cartBtnContainer: {
+
+    }
 })

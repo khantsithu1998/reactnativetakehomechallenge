@@ -29,7 +29,7 @@ export default function CartsModal() {
                 </View>
                 <TouchableOpacity style={style.clearAllBtn} onPress={() => {
                     setTotalPrice(0);
-                    setCartsList([])
+                    setCartsList([]);
                 }}>
                     <Text style={style.clearAllBtnText}>Clear All</Text>
                 </TouchableOpacity>
