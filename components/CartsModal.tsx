@@ -5,6 +5,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useAtom } from 'jotai';
 import { cartListAtom, showCartsModalShowAtom } from '../utils/atoms';
 import CartsList from './CartsList';
+import SuccessIcon from '../assets/icons/SuccessIcon';
+import CancelIcon from '../assets/icons/CancelIcon';
 
 export default function CartsModal() {
     const [, setShowCartsModal] = useAtom(showCartsModalShowAtom)
@@ -16,7 +18,11 @@ export default function CartsModal() {
             height: paySuccess ? hp(30) : hp(50),
             marginTop: paySuccess ? hp(60) : hp(40)
         }}>
-            {paySuccess ? <Text>Payment Success</Text> : <>
+            {paySuccess ? <View style={style.successContainer}>
+             
+                <SuccessIcon width={hp(10)} height={hp(10)} />
+                <Text style={style.successText}>Payment Success</Text>
+            </View> : <>
                 <View style={style.cartsListContainer}>
                     <CartsList />
                 </View>
@@ -35,7 +41,7 @@ export default function CartsModal() {
 
                 </View></>}
             <TouchableOpacity onPress={() => setShowCartsModal(false)} style={style.closeBtn}>
-                <Text>Close</Text>
+                <CancelIcon width={hp(2)} height={hp(2)}/>
             </TouchableOpacity>
         </View>
     </Modal>
@@ -95,6 +101,19 @@ const style = StyleSheet.create({
     closeBtn: {
         backgroundColor: 'red',
         borderRadius: wp(2),
-        marginTop: -hp(10)
+        width : wp(10),
+        height : hp(4),
+        alignItems : 'center',
+        justifyContent : 'center',
+        position : 'absolute',
+        bottom : -hp(2),
+        
+    },
+    successContainer : {
+        alignSelf : 'center',
+        alignItems : 'center',
+    },
+    successText : {
+        marginTop : hp(2)
     }
 })
