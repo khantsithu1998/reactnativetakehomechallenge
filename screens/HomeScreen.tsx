@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useAtom } from 'jotai';
 import { cartListAtom, showCartsModalShowAtom } from '../utils/atoms';
 import CartsModal from '../components/CartsModal';
+import BasketIcon from '../assets/icons/BasketIcon';
 
 export default function HomeScreen({ navigation }: any) {
     const [notificationCount, setNotificationCount] = useState(3);
@@ -21,6 +22,7 @@ export default function HomeScreen({ navigation }: any) {
                 setShowCartsModal(true);
                 //navigation.navigate('MyModal')
             }}>
+                <BasketIcon width={hp(2.5)} height={hp(2.5)}/>
                 <Text style={style.cartText}>View Cart</Text>
                 {notificationCount > 0 && (
                     <View style={style.notification}>
@@ -38,14 +40,19 @@ const style = StyleSheet.create({
         zIndex: 0
     },
     cartBtn: {
+        flexDirection : 'row',
         backgroundColor: 'blue',
-        width: wp(20),
+        width: wp(30),
         alignSelf: 'center',
-        marginTop: -hp(15),
+        borderRadius : wp(3),
+        marginTop: -hp(12),
+        paddingVertical : hp(1),
+        paddingHorizontal : wp(5),
         position: 'relative',
         zIndex: 1,
     },
     cartText: {
+        marginLeft : wp(1),
         color: 'white'
     },
     notification: {
