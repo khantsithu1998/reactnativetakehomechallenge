@@ -26,12 +26,16 @@ Navigate to the project directory:
 Install the dependencies:
 
 ```npm install```
+
     or
+    
 ```yarn install```
 
 For iOS
 ```cd ios```
+
 ``` pod install ```
+
 ```cd ..```
 
 Run the app:
