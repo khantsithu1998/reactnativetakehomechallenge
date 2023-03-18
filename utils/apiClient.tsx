@@ -14,7 +14,7 @@ export enum ApiStatus {
 
 interface ApiResponse<T> {
     status: ApiStatus;
-    data?: T;
+    data?: any;
     message?: string;
 }
 
