@@ -5,28 +5,28 @@ import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { cartListAtom } from '../utils/atoms';
 import { CardType } from '../types/cardType';
+import SearchIcon from '../assets/icons/SearchIcon';
 
-// const apiStatusAtom = atom<ApiStatus>(ApiStatus.Loading);
 export default function PokemonsList() {
-    const [cardsListData, setCardsListData] = useState<CardType[] | any>();
-    // const [apiStatus, setApiStatus] = useAtom(apiStatusAtom);
+    const [cardsListData, setCardsListData] = useState<CardType[] | any>([]);
     const [apiStatus, setApiStatus] = useState(ApiStatus.Loading);
     const [message, setMessage] = useState('')
+    const [page, setPage] = useState(1)
 
     useEffect(() => {
-        APIClient.get<any[]>('https://api.pokemontcg.io/v2/cards?pageSize=12&page=1')
+        APIClient.get<any[]>(`https://api.pokemontcg.io/v2/cards?pageSize=12&page=${page}`)
             .then((response) => {
                 setApiStatus(response.status);
                 if (response.status === ApiStatus.Success) {
-                    setCardsListData(response.data.data ?? [])
+                    setCardsListData((prevCardsListData : any) => [...prevCardsListData, ...response.data.data ?? []])
                 }
                 setMessage(response.message ?? '');
             });
-    }, []);
+    }, [page]);
 
-    // useEffect(() => {
-    //    console.log("cards List Data"  + JSON.stringify(cardsListData[0]))
-    // },[cardsListData])
+    const loadMore = () => {
+        setPage(page + 1);
+      };
 
     const renderItem = ({ item , index }: any) => <Card name={item.name} images={item.images} rarity={item.rarity} />
 
@@ -43,7 +43,11 @@ export default function PokemonsList() {
         return <FlatList
             data={cardsListData}
             renderItem={renderItem}
-            keyExtractor={item => item.id} />
+            keyExtractor={item => item.id}
+            ListFooterComponent={() => (<TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
+                <SearchIcon width={hp(2)} height={hp(2)}/>
+                <Text>show more</Text>
+            </TouchableOpacity>)} />
     }
     return <></>
 }
@@ -125,6 +129,12 @@ const style = StyleSheet.create({
         color: 'black',
         fontSize: wp(5),
         fontWeight: 'bold',
+    },
+    showMoreBtn : {
+        alignSelf : 'center',
+        alignItems : 'center',
+        marginBottom : hp(2)
+        // marginVertical : hp(10),
     }
 
 });

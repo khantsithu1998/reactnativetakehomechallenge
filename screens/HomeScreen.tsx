@@ -28,6 +28,7 @@ export default function HomeScreen({ navigation }: any) {
             </View>
             <View style={style.listContainer}>
                 <PokemonsList />
+                
             </View>
             {cartsList.length > 0 ? <TouchableOpacity style={style.cartBtn} onPress={() => {
                 setShowCartsModal(true);
@@ -69,6 +70,7 @@ const style = StyleSheet.create({
         fontWeight : 'bold'
     },
     listContainer: {
+        flex : 1,
         zIndex: 0
     },
     cartBtn: {
@@ -77,10 +79,10 @@ const style = StyleSheet.create({
         width: wp(30),
         alignSelf: 'center',
         borderRadius: wp(3),
-        marginTop: -hp(12),
+        position : 'absolute',
+        bottom: hp(10),
         paddingVertical: hp(1),
         paddingHorizontal: wp(5),
-        position: 'relative',
         zIndex: 1,
     },
     cartText: {
