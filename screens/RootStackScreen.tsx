@@ -5,21 +5,35 @@ import HomeScreen from './HomeScreen';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 import 'react-native-gesture-handler';
 import LoginScreen from './LoginScreen';
+import { useAtom } from 'jotai';
+import { isAuthenticatedAtom } from '../utils/atoms';
 
 
 const RootStack = createStackNavigator();
 
 export default function RootStackScreen() {
-    return (
-        <NavigationContainer>
-            <RootStack.Navigator initialRouteName='Login'>
-                <RootStack.Group screenOptions={{ headerShown: false }}>
-                    <RootStack.Screen options={{ cardStyle: { backgroundColor: 'transparent' } }} name="Login" component={LoginScreen} />
-                    <RootStack.Screen options={{ cardStyle: { backgroundColor: 'transparent' } }} name="Home" component={HomeScreen} />
-                </RootStack.Group>
+    const [isAuthenticated, ] = useAtom(isAuthenticatedAtom)
 
-            </RootStack.Navigator>
-        </NavigationContainer>
-    );
+    if (!isAuthenticated) {
+        return (
+            <NavigationContainer>
+                <RootStack.Navigator initialRouteName='Login'>
+                    <RootStack.Group screenOptions={{ headerShown: false }}>
+                        <RootStack.Screen options={{ cardStyle: { backgroundColor: 'transparent' } }} name="Login" component={LoginScreen} />
+                    </RootStack.Group>
+                </RootStack.Navigator>
+            </NavigationContainer>
+        )
+    } else {
+        return (
+            <NavigationContainer>
+                <RootStack.Navigator initialRouteName='Home'>
+                    <RootStack.Group screenOptions={{ headerShown: false }}>
+                        <RootStack.Screen options={{ cardStyle: { backgroundColor: 'transparent' } }} name="Home" component={HomeScreen} />
+                    </RootStack.Group>
+                </RootStack.Navigator>
+            </NavigationContainer>
+        )
+    }
 }
 

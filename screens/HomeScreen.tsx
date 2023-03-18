@@ -4,7 +4,7 @@ import PokemonsList from '../components/PokemonsList';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState } from 'react';
 import { useAtom } from 'jotai';
-import { cartListAtom, showCartsModalShowAtom } from '../utils/atoms';
+import { cartListAtom, showCartsModalShowAtom, totalCartCardsAtom } from '../utils/atoms';
 import CartsModal from '../components/CartsModal';
 import BasketIcon from '../assets/icons/BasketIcon';
 import PokemonLogo from '../assets/icons/PokemonLogo';
@@ -12,6 +12,7 @@ import PokemonSearchForm from '../components/PokemonSearchForm';
 
 export default function HomeScreen({ navigation }: any) {
     const [cartsList,] = useAtom<any[]>(cartListAtom)
+    const [totalCards,] = useAtom(totalCartCardsAtom)
     const [showCartsModal, setShowCartsModal] = useAtom(showCartsModalShowAtom)
 
     return (
@@ -38,7 +39,7 @@ export default function HomeScreen({ navigation }: any) {
                 <BasketIcon width={hp(2.5)} height={hp(2.5)} />
                 <Text style={styles.cartText}>View Cart</Text>
                 <View style={styles.notification}>
-                    <Text style={styles.notificationText}>{cartsList.length}</Text>
+                    <Text style={styles.notificationText}>{totalCards}</Text>
                 </View>
 
             </TouchableOpacity> : <></>}

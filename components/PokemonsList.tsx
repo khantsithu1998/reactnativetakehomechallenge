@@ -63,11 +63,11 @@ const Card = ({ item }: PokemonCardProps) => {
     return <View style={style.cardContainer}>
         <Image style={style.cardImage} source={{ uri: item.images.small, width: wp(40), height: hp(30) }} />
         <View style={style.cardInnerContainer}>
-            <Text style={style.cardName}>{item.name}</Text>
-            <Text style={style.cardRarity}>{item.rarity}</Text>
+            <Text style={style.cardName}>{item.name ?? ''}</Text>
+            <Text style={style.cardRarity}>{item.rarity ?? ''}</Text>
             <View style={style.cardPriceContainer}>
-                <Text style={style.cardPrice}>${item.cardmarket.prices.averageSellPrice}</Text>
-                <Text style={style.cardPrice}>{item.set.total} left</Text>
+                <Text style={style.cardPrice}>${item.cardmarket.prices.averageSellPrice ?? ''}</Text>
+                <Text style={style.cardPrice}>{item.set.total ?? 0} left</Text>
             </View>
         </View>
         <TouchableOpacity disabled={item.selected} style={{ ...style.cardBtn, backgroundColor: item.selected ? 'black' : '#FDCE29' }} onPress={() => {
