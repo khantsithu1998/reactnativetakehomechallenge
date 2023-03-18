@@ -65,11 +65,14 @@ const style = StyleSheet.create({
         marginVertical: hp(1)
     },
     totalCardsText: {
-        fontSize: wp(3)
+        color : 'black',
+        fontSize: wp(3),
+        fontFamily : 'Poppins-SemiBold'
     },
     totalCardsCountText: {
         fontSize: wp(3),
-        color: 'red'
+        color: 'red',
+        fontFamily : 'Poppins-SemiBold'
     },
     totalPriceContainer: {
         width: wp(38),
@@ -80,11 +83,11 @@ const style = StyleSheet.create({
     totalPriceText: {
         color: 'black',
         fontSize: wp(3.4),
-        fontWeight: 'bold'
+        fontFamily : 'Poppins-Bold',
     },
     totalPriceTotalText: {
         fontSize: wp(3.4),
-        fontWeight: 'bold',
+        fontFamily : 'Poppins-Bold',
         color: 'red'
     },
     payNowBtn: {
@@ -95,7 +98,8 @@ const style = StyleSheet.create({
     },
     payNowBtnText: {
         color: 'white',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontFamily : 'Poppins-Bold'
     },
     closeBtn: {
         backgroundColor: 'red',
