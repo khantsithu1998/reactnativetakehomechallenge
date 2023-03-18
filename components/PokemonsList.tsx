@@ -42,6 +42,7 @@ export default function PokemonsList() {
             data={cardsListData}
             renderItem={renderItem}
             keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
             ListFooterComponent={() => (<TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
                 <SearchIcon width={hp(2)} height={hp(2)}/>
                 <Text>show more</Text>
@@ -68,11 +69,14 @@ const Card = ( {item} : PokemonCardProps ) => {
                 <Text style={style.cardPrice}>{item.set.total} left</Text>
             </View>
         </View>
-        <TouchableOpacity style={style.cardBtn} onPress={() => {
+        <TouchableOpacity disabled={item.selected} style={{...style.cardBtn, backgroundColor : item.selected ? 'black' : '#FDCE29'}} onPress={() => {
+           if(!item.selected) {
             setCartsList((prevCartListData : any) => [...prevCartListData,item])
             setTotalPrice((prevTotal) => prevTotal + item.cardmarket.prices.averageSellPrice)
+            item.selected = true
+           }
         }}>
-            <Text style={style.cardBtnText}>Select Card</Text>
+            <Text style={{...style.cardBtnText, color : item.selected ? 'white' : 'black'}}>{item.selected ? 'Selected Card' : 'Select Card'}</Text>
         </TouchableOpacity>
     </View>
 };
@@ -123,7 +127,6 @@ const style = StyleSheet.create({
     },
     cardBtn: {
         width: wp(45),
-        backgroundColor: '#FDCE29',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: wp(5),

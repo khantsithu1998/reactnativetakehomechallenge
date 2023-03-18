@@ -22,6 +22,12 @@ export interface CardType {
     images: PokemonImages;
     tcgplayer: Tcgplayer;
     cardmarket: CardMarket;
+    selected : boolean;
+}
+
+export interface SelectedCardType {
+    cardType : CardType,
+    cartCount : number
 }
 
 interface CardMarket {
