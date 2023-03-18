@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Modal, View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { APIClient, ApiStatus } from '../utils/apiClient';
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
 import { cartListAtom, showCartsModalShowAtom, totalPriceAtom } from '../utils/atoms';
