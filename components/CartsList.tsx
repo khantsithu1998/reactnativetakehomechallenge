@@ -23,8 +23,16 @@ interface CartProps {
 
 const Cart = ({ item }: CartProps) => (
     <View style={style.cartContainer}>
-        <Image style={style.cardImage} source={{ uri: item.images.small, width: wp(20), height: hp(10) }} />
-        <Text>{item.name}</Text>
+        <Image style={style.cardImage} source={{ uri: item.images.small, width: wp(20), height: hp(14) }} />
+        <View style={style.midContainer}>
+            <Text style={style.cardName}>{item.name}</Text>
+            <Text style={style.perCardText}>${item.cardmarket.prices.averageSellPrice} per card</Text>
+
+            <View style={style.cardLeftContainer}>
+            <Text style={style.cardLeftCountText}>4 </Text>
+            <Text style={style.cardLeftText}>cards left</Text>
+            </View>
+        </View>
         <Text>{item.cardmarket.prices.averageSellPrice}</Text>
     </View>
 );
@@ -32,9 +40,35 @@ const Cart = ({ item }: CartProps) => (
 const style = StyleSheet.create({
     cartContainer: {
         flexDirection: 'row',
-        backgroundColor: 'red'
+        marginVertical: hp(2),
+        width : wp(80)
+        // backgroundColor: 'red'
+    },
+    midContainer: {
+        width : wp(40)
+    },
+    cardName: {
+        marginTop: hp(0.5),
+        color : 'black',
+        fontWeight: 'bold',
+        fontSize : wp(4.2)
     },
     cardImage: {
-
+        marginRight: wp(4)
     },
+    perCardText : {
+        fontSize: wp(3)
+    },
+    cardLeftContainer : {
+        marginTop : hp(4),
+        flexDirection : 'row'
+    },
+    cardLeftCountText : {
+        color : 'red',
+        fontSize : wp(3.2)
+    },
+    cardLeftText : {
+        
+        fontSize : wp(3.2)
+    }
 })

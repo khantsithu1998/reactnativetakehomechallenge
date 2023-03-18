@@ -17,8 +17,8 @@ export default function CartsModal() {
     return <Modal transparent={true}>
         <View style={{
             ...style.modalContainer,
-            height: paySuccess ? hp(30) : hp(50),
-            marginTop: paySuccess ? hp(60) : hp(40)
+            height: paySuccess ? hp(30) : hp(60),
+            marginTop: paySuccess ? hp(70) : hp(30)
         }}>
             {paySuccess ? <View style={style.successContainer}>
                 <SuccessIcon width={hp(10)} height={hp(10)} />
@@ -56,13 +56,13 @@ const style = StyleSheet.create({
         
     },
     cartsListContainer: {
-        height: hp(30),
+        height: hp(40),
     },
     totalCardsContainer: {
         width: wp(38),
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: hp(2)
+        marginVertical: hp(1)
     },
     totalCardsText: {
         fontSize: wp(3)
