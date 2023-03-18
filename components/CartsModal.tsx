@@ -18,7 +18,7 @@ export default function CartsModal() {
         <View style={{
             ...style.modalContainer,
             height: paySuccess ? hp(30) : hp(60),
-            marginTop: paySuccess ? hp(70) : hp(30)
+            marginTop: paySuccess ? hp(60) : hp(30)
         }}>
             {paySuccess ? <View style={style.successContainer}>
                 <SuccessIcon width={hp(10)} height={hp(10)} />
