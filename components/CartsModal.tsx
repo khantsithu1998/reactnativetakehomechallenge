@@ -11,14 +11,14 @@ import CancelIcon from '../assets/icons/CancelIcon';
 export default function CartsModal() {
     const [, setShowCartsModal] = useAtom(showCartsModalShowAtom)
     const [paySuccess, setPaySuccess] = useState(false)
-    const [totalPrice, ] = useAtom(totalPriceAtom)
-    const [cartsList, ] = useAtom(cartListAtom);
+    const [totalPrice, setTotalPrice] = useAtom(totalPriceAtom)
+    const [cartsList, setCartsList] = useAtom(cartListAtom);
 
     return <Modal transparent={true}>
         <View style={{
             ...style.modalContainer,
-            height: paySuccess ? hp(30) : hp(60),
-            marginTop: paySuccess ? hp(60) : hp(30)
+            height: paySuccess ? hp(30) : hp(70),
+            marginTop: paySuccess ? hp(60) : hp(20)
         }}>
             {paySuccess ? <View style={style.successContainer}>
                 <SuccessIcon width={hp(10)} height={hp(10)} />
@@ -27,6 +27,12 @@ export default function CartsModal() {
                 <View style={style.cartsListContainer}>
                     <CartsList />
                 </View>
+                <TouchableOpacity style={style.clearAllBtn} onPress={() => {
+                    setTotalPrice(0);
+                    setCartsList([])
+                }}>
+                    <Text style={style.clearAllBtnText}>Clear All</Text>
+                </TouchableOpacity>
                 <View style={style.totalCardsContainer}>
                     <Text style={style.totalCardsText}>Total Cards</Text>
                     <Text style={style.totalCardsCountText}>{cartsList.length}</Text>
@@ -119,5 +125,12 @@ const style = StyleSheet.create({
     successText: {
         fontFamily : 'Poppins-Regular',
         marginTop: hp(2)
+    },
+    clearAllBtn : {
+        marginTop : hp(1)
+    },
+    clearAllBtnText : {
+        fontFamily : 'Poppins-Regular',
+        textDecorationLine: 'underline'
     }
 })
