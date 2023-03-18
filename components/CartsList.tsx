@@ -50,14 +50,16 @@ const style = StyleSheet.create({
     cardName: {
         marginTop: hp(0.5),
         color : 'black',
-        fontWeight: 'bold',
+        fontFamily : 'Poppins-Bold',
         fontSize : wp(4.2)
     },
     cardImage: {
         marginRight: wp(4)
     },
     perCardText : {
-        fontSize: wp(3)
+        color : 'black',
+        fontSize: wp(3),
+        fontFamily : 'Poppins-Regular',
     },
     cardLeftContainer : {
         marginTop : hp(4),
@@ -65,10 +67,11 @@ const style = StyleSheet.create({
     },
     cardLeftCountText : {
         color : 'red',
-        fontSize : wp(3.2)
+        fontSize : wp(3.2),
+        fontFamily : 'Poppins-Regular'
     },
     cardLeftText : {
-        
-        fontSize : wp(3.2)
+        fontSize : wp(3.2),
+        fontFamily : 'Poppins-Regular'
     }
 })

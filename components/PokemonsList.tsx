@@ -105,7 +105,7 @@ const style = StyleSheet.create({
         fontFamily: 'Poppins-Bold',
     },
     cardRarity: {
-        color: 'blue',
+        color: '#0F6DB0',
         fontSize: wp(3),
         fontFamily : 'Poppins-Light',
         marginVertical: hp(0.5)
@@ -127,6 +127,7 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: wp(5),
+        fontFamily : 'Roboto-Light',
         marginTop: -hp(3),
         paddingVertical: hp(1)
     },
