@@ -35,8 +35,14 @@ For iOS
 
 Run the app:
 
-```npx react-native run-android``` //for android
+For Android
+
+```npx react-native run-android``` 
+
 or
-```npx react-native run-ios``` //for iOS
+
+For iOS
+
+```npx react-native run-ios``` 
 This will build the app and launch it on an Android or iOS emulator, depending on the platform you specified.
 
