@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
+import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar , TextInput} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PokemonsList from '../components/PokemonsList';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -8,34 +8,37 @@ import { cartListAtom, showCartsModalShowAtom } from '../utils/atoms';
 import CartsModal from '../components/CartsModal';
 import BasketIcon from '../assets/icons/BasketIcon';
 import PokemonLogo from '../assets/icons/PokemonLogo';
+import PokemonSearchForm from '../components/PokemonSearchForm';
 
 export default function HomeScreen({ navigation }: any) {
     const [cartsList,] = useAtom<any[]>(cartListAtom)
     const [showCartsModal, setShowCartsModal] = useAtom(showCartsModalShowAtom)
 
     return (
-        <SafeAreaView style={style.homeWrapper}>
+        <SafeAreaView style={styles.homeWrapper}>
             <StatusBar
         animated={true}
         barStyle={'dark-content'}
         backgroundColor="white"
       />
-            <View style={style.homeBarContainer}>
-                <Text style={style.homeBarTitle}>TCG Marketplace</Text>
-                <View style={style.logoContainer}>
+            <View style={styles.homeBarContainer}>
+                <Text style={styles.homeBarTitle}>TCG Marketplace</Text>
+                <View style={styles.logoContainer}>
                 <PokemonLogo width={hp(7)} height={hp(7)}/>
                 </View>
             </View>
-            <View style={style.listContainer}>
+            
+            {/* <PokemonSearchForm/> */}
+            <View style={styles.listContainer}>
                 <PokemonsList />
             </View>
-            {cartsList.length > 0 ? <TouchableOpacity style={style.cartBtn} onPress={() => {
+            {cartsList.length > 0 ? <TouchableOpacity style={styles.cartBtn} onPress={() => {
                 setShowCartsModal(true);
             }}>
                 <BasketIcon width={hp(2.5)} height={hp(2.5)} />
-                <Text style={style.cartText}>View Cart</Text>
-                <View style={style.notification}>
-                    <Text style={style.notificationText}>{cartsList.length}</Text>
+                <Text style={styles.cartText}>View Cart</Text>
+                <View style={styles.notification}>
+                    <Text style={styles.notificationText}>{cartsList.length}</Text>
                 </View>
 
             </TouchableOpacity> : <></>}
@@ -44,7 +47,7 @@ export default function HomeScreen({ navigation }: any) {
     );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     homeWrapper : {
         flex : 1
     },
@@ -53,7 +56,7 @@ const style = StyleSheet.create({
         justifyContent : 'center',
         alignItems : 'center',
         paddingVertical : hp(4),
-        marginBottom : hp(5)
+        marginBottom : hp(3)
     },
     logoContainer  :{
         backgroundColor : 'white',
