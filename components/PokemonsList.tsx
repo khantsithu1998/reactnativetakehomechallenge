@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { cartListAtom } from '../utils/atoms';
+import { cartListAtom, totalPriceAtom } from '../utils/atoms';
 import { CardType } from '../types/cardType';
 import SearchIcon from '../assets/icons/SearchIcon';
 
@@ -28,12 +28,10 @@ export default function PokemonsList() {
         setPage(page + 1);
       };
 
-    const renderItem = ({ item , index }: any) => <Card name={item.name} images={item.images} rarity={item.rarity} />
+      const renderItem = ({ item }: { item: CardType }) => <Card item={item} />
 
     if (apiStatus === ApiStatus.Error || apiStatus === ApiStatus.Failure) {
-
         return <Text>{message}</Text>
-
     }
 
     if (apiStatus === ApiStatus.Loading) return <Text>Loading...</Text>
@@ -52,11 +50,13 @@ export default function PokemonsList() {
     return <></>
 }
 
-const Card = ( item : { name: String, images: any, rarity: String }) => {
-    const [, setCartsList] = useAtom(cartListAtom)
-    // const { images } = item.images;
+interface PokemonCardProps {
+    item: CardType
+}
 
-    // console.log(images);
+const Card = ( {item} : PokemonCardProps ) => {
+    const [, setCartsList] = useAtom(cartListAtom)
+    const [, setTotalPrice] = useAtom(totalPriceAtom)
 
     return <View style={style.cardContainer}>
         <Image style={style.cardImage} source={{ uri: item.images.small, width: wp(40), height: hp(30) }} />
@@ -68,7 +68,10 @@ const Card = ( item : { name: String, images: any, rarity: String }) => {
                 <Text style={style.cardPrice}>3 left</Text>
             </View>
         </View>
-        <TouchableOpacity style={style.cardBtn} onPress={() => setCartsList((prevCartListData : any) => [...prevCartListData,item])}>
+        <TouchableOpacity style={style.cardBtn} onPress={() => {
+            setCartsList((prevCartListData : any) => [...prevCartListData,item])
+            setTotalPrice((prevTotal) => prevTotal + item.cardmarket.prices.averageSellPrice)
+        }}>
             <Text style={style.cardBtnText}>Select Card</Text>
         </TouchableOpacity>
     </View>
