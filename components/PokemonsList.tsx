@@ -102,12 +102,13 @@ const style = StyleSheet.create({
     cardName: {
         color: 'black',
         fontSize: wp(5),
-        fontWeight: 'bold'
+        fontFamily: 'Poppins-Bold',
     },
     cardRarity: {
         color: 'blue',
         fontSize: wp(3),
-        marginVertical: hp(1)
+        fontFamily : 'Poppins-Light',
+        marginVertical: hp(0.5)
     },
     cardPriceContainer: {
         flexDirection: 'row',
@@ -117,7 +118,8 @@ const style = StyleSheet.create({
         paddingHorizontal: wp(20)
     },
     cardPrice: {
-        color: 'grey'
+        color: '#6A6969',
+        fontFamily : 'Poppins-Regular'
     },
     cardBtn: {
         width: wp(45),
@@ -131,7 +133,7 @@ const style = StyleSheet.create({
     cardBtnText: {
         color: 'black',
         fontSize: wp(5),
-        fontWeight: 'bold',
+        fontFamily : 'Poppins-SemiBold'
     },
     showMoreBtn : {
         alignSelf : 'center',
