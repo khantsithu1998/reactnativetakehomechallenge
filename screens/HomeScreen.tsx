@@ -10,7 +10,7 @@ import BasketIcon from '../assets/icons/BasketIcon';
 import PokemonLogo from '../assets/icons/PokemonLogo';
 
 export default function HomeScreen({ navigation }: any) {
-    const [cartsList, setCartsList] = useAtom<any[]>(cartListAtom)
+    const [cartsList,] = useAtom<any[]>(cartListAtom)
     const [showCartsModal, setShowCartsModal] = useAtom(showCartsModalShowAtom)
 
     return (
@@ -28,11 +28,9 @@ export default function HomeScreen({ navigation }: any) {
             </View>
             <View style={style.listContainer}>
                 <PokemonsList />
-                
             </View>
             {cartsList.length > 0 ? <TouchableOpacity style={style.cartBtn} onPress={() => {
                 setShowCartsModal(true);
-                //navigation.navigate('MyModal')
             }}>
                 <BasketIcon width={hp(2.5)} height={hp(2.5)} />
                 <Text style={style.cartText}>View Cart</Text>
@@ -70,6 +68,8 @@ const style = StyleSheet.create({
         fontWeight : 'bold'
     },
     listContainer: {
+        justifyContent : 'center',
+        alignItems : 'center',
         flex : 1,
         zIndex: 0
     },

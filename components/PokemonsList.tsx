@@ -1,6 +1,6 @@
 import { atom, useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { cartListAtom, totalPriceAtom } from '../utils/atoms';
@@ -34,7 +34,7 @@ export default function PokemonsList() {
         return <Text>{message}</Text>
     }
 
-    if (apiStatus === ApiStatus.Loading) return <Text>Loading...</Text>
+    if (apiStatus === ApiStatus.Loading) return <ActivityIndicator color={'#FDCE29'} size={'large'}/>
 
     if (cardsListData && apiStatus == ApiStatus.Success) {
 
