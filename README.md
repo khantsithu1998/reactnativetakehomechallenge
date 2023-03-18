@@ -18,6 +18,7 @@ To build and run the app, follow these steps:
 Clone the repository to your local machine:
 
 ```git clone https://github.com/khantsithu1998/reactnativetakehomechallenge.git```
+
 Navigate to the project directory:
 
 ```cd React-Native-Take-Home-Challenge```
