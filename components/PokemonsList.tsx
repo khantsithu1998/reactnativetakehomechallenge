@@ -18,7 +18,7 @@ export default function PokemonsList() {
             .then((response) => {
                 setApiStatus(response.status);
                 if (response.status === ApiStatus.Success) {
-                    setCardsListData((prevCardsListData : any) => [...prevCardsListData, ...response.data.data ?? []])
+                    setCardsListData((prevCardsListData: any) => [...prevCardsListData, ...response.data.data ?? []])
                 }
                 setMessage(response.message ?? '');
             });
@@ -26,15 +26,15 @@ export default function PokemonsList() {
 
     const loadMore = () => {
         setPage(page + 1);
-      };
+    };
 
-      const renderItem = ({ item }: { item: CardType }) => <Card item={item} />
+    const renderItem = ({ item }: { item: CardType }) => <Card item={item} />
 
     if (apiStatus === ApiStatus.Error || apiStatus === ApiStatus.Failure) {
         return <Text>{message}</Text>
     }
 
-    if (apiStatus === ApiStatus.Loading) return <ActivityIndicator color={'#FDCE29'} size={'large'}/>
+    if (apiStatus === ApiStatus.Loading) return <ActivityIndicator color={'#FDCE29'} size={'large'} />
 
     if (cardsListData && apiStatus == ApiStatus.Success) {
 
@@ -44,7 +44,7 @@ export default function PokemonsList() {
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             ListFooterComponent={() => (<TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
-                <SearchIcon width={hp(2)} height={hp(2)}/>
+                <SearchIcon width={hp(2)} height={hp(2)} />
                 <Text>show more</Text>
             </TouchableOpacity>)} />
     }
@@ -55,7 +55,7 @@ interface PokemonCardProps {
     item: CardType
 }
 
-const Card = ( {item} : PokemonCardProps ) => {
+const Card = ({ item }: PokemonCardProps) => {
     const [, setCartsList] = useAtom(cartListAtom)
     const [, setTotalPrice] = useAtom(totalPriceAtom)
 
@@ -69,14 +69,14 @@ const Card = ( {item} : PokemonCardProps ) => {
                 <Text style={style.cardPrice}>{item.set.total} left</Text>
             </View>
         </View>
-        <TouchableOpacity disabled={item.selected} style={{...style.cardBtn, backgroundColor : item.selected ? 'black' : '#FDCE29'}} onPress={() => {
-           if(!item.selected) {
-            setCartsList((prevCartListData : any) => [...prevCartListData,item])
-            setTotalPrice((prevTotal) => prevTotal + item.cardmarket.prices.averageSellPrice)
-            item.selected = true
-           }
+        <TouchableOpacity disabled={item.selected} style={{ ...style.cardBtn, backgroundColor: item.selected ? 'black' : '#FDCE29' }} onPress={() => {
+            if (!item.selected) {
+                setCartsList((prevCartListData: any) => [...prevCartListData, { cardType: item, cartCount: 1 }])
+                setTotalPrice((prevTotal) => prevTotal + item.cardmarket.prices.averageSellPrice)
+                item.selected = true
+            }
         }}>
-            <Text style={{...style.cardBtnText, color : item.selected ? 'white' : 'black'}}>{item.selected ? 'Selected Card' : 'Select Card'}</Text>
+            <Text style={{ ...style.cardBtnText, color: item.selected ? 'white' : 'black' }}>{item.selected ? 'Selected Card' : 'Select Card'}</Text>
         </TouchableOpacity>
     </View>
 };
@@ -111,7 +111,7 @@ const style = StyleSheet.create({
     cardRarity: {
         color: '#0F6DB0',
         fontSize: wp(3),
-        fontFamily : 'Poppins-Light',
+        fontFamily: 'Poppins-Light',
         marginVertical: hp(0.5)
     },
     cardPriceContainer: {
@@ -123,26 +123,26 @@ const style = StyleSheet.create({
     },
     cardPrice: {
         color: '#6A6969',
-        fontFamily : 'Poppins-Regular'
+        fontFamily: 'Poppins-Regular'
     },
     cardBtn: {
         width: wp(45),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: wp(5),
-        fontFamily : 'Roboto-Light',
+        fontFamily: 'Roboto-Light',
         marginTop: -hp(3),
         paddingVertical: hp(1)
     },
     cardBtnText: {
         color: 'black',
         fontSize: wp(5),
-        fontFamily : 'Poppins-SemiBold'
+        fontFamily: 'Poppins-SemiBold'
     },
-    showMoreBtn : {
-        alignSelf : 'center',
-        alignItems : 'center',
-        marginBottom : hp(2)
+    showMoreBtn: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        marginBottom: hp(2)
         // marginVertical : hp(10),
     }
 

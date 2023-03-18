@@ -4,74 +4,94 @@ import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
 import { cartListAtom } from '../utils/atoms';
-import { CardType } from '../types/cardType';
+import { CardType, SelectedCardType } from '../types/cardType';
 
 export default function CartsList() {
-    const [cartsList, setCartsList] = useAtom<CardType[]>(cartListAtom)
+    const [cartsList, setCartsList] = useAtom<SelectedCardType[]>(cartListAtom)
 
-    const renderItem = ({ item }: { item: CardType }) => <Cart item={item} />
+    const renderItem = ({ item }: { item: SelectedCardType }) => <Cart item={item} />
 
     return cartsList.length > 0 ? <FlatList
         data={cartsList}
         renderItem={renderItem}
-        keyExtractor={item => 'cart' + '-' + item.name} /> : <></>
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => 'cart' + '-' + item.cardType.name} /> : <></>
 }
 
 interface CartProps {
-    item: CardType
+    item: SelectedCardType
 }
 
 const Cart = ({ item }: CartProps) => (
-    <View style={style.cartContainer}>
-        <Image style={style.cardImage} source={{ uri: item.images.small, width: wp(20), height: hp(14) }} />
-        <View style={style.midContainer}>
-            <Text style={style.cardName}>{item.name}</Text>
-            <Text style={style.perCardText}>${item.cardmarket.prices.averageSellPrice} per card</Text>
+    <View style={styles.cartContainer}>
+        <Image style={styles.cardImage} source={{ uri: item.cardType.images.small, width: wp(20), height: hp(14) }} />
+        <View style={styles.midContainer}>
+            <Text style={styles.cardName}>{item.cardType.name}</Text>
+            <Text style={styles.perCardText}>${item.cardType.cardmarket.prices.averageSellPrice} per card</Text>
 
-            <View style={style.cardLeftContainer}>
-            <Text style={style.cardLeftCountText}>4 </Text>
-            <Text style={style.cardLeftText}>cards left</Text>
+            <View style={styles.cardLeftContainer}>
+                <Text style={styles.cardLeftCountText}>{item.cardType.set.total}</Text>
+                <Text style={styles.cardLeftText}> cards left</Text>
             </View>
         </View>
-        <Text>{item.cardmarket.prices.averageSellPrice}</Text>
+        <View>
+            <Text style={styles.cartCountText}>{item.cartCount}</Text>
+            <Text style={styles.priceText}>price</Text>
+
+            <Text style={styles.pricePerText}>${item.cardType.cardmarket.prices.averageSellPrice}</Text>
+        </View>
     </View>
 );
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     cartContainer: {
         flexDirection: 'row',
         marginVertical: hp(2),
-        width : wp(80)
+        width: wp(80)
         // backgroundColor: 'red'
     },
     midContainer: {
-        width : wp(40)
+        width: wp(40)
     },
     cardName: {
         marginTop: hp(0.5),
-        color : 'black',
-        fontFamily : 'Poppins-Bold',
-        fontSize : wp(4.2)
+        color: 'black',
+        fontFamily: 'Poppins-Bold',
+        fontSize: wp(4.2)
     },
     cardImage: {
         marginRight: wp(4)
     },
-    perCardText : {
-        color : 'black',
+    perCardText: {
+        color: 'black',
         fontSize: wp(3),
-        fontFamily : 'Poppins-Regular',
+        fontFamily: 'Poppins-Regular',
     },
-    cardLeftContainer : {
-        marginTop : hp(4),
-        flexDirection : 'row'
+    cardLeftContainer: {
+        marginTop: hp(4),
+        flexDirection: 'row'
     },
-    cardLeftCountText : {
-        color : 'red',
-        fontSize : wp(3.2),
+    cardLeftCountText: {
+        color: 'red',
+        fontSize: wp(3.2),
+        fontFamily: 'Poppins-Regular'
+    },
+    cardLeftText: {
+        fontSize: wp(3.2),
+        fontFamily: 'Poppins-Regular'
+    },
+    cartCountText: {
+        color: '#298BFD',
+        fontFamily: 'Poppins-Bold',
+        marginBottom : hp(2)
+    },
+    priceText : {
+        color : '#1D1C1C',
         fontFamily : 'Poppins-Regular'
+
     },
-    cardLeftText : {
-        fontSize : wp(3.2),
-        fontFamily : 'Poppins-Regular'
-    }
+    pricePerText: {
+        color: '#298BFD',
+        fontFamily: 'Poppins-Bold'
+    },
 })
