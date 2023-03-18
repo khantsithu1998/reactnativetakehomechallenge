@@ -64,8 +64,8 @@ const Card = ( {item} : PokemonCardProps ) => {
             <Text style={style.cardName}>{item.name}</Text>
             <Text style={style.cardRarity}>{item.rarity}</Text>
             <View style={style.cardPriceContainer}>
-                <Text style={style.cardPrice}>$2.49</Text>
-                <Text style={style.cardPrice}>3 left</Text>
+                <Text style={style.cardPrice}>${item.cardmarket.prices.averageSellPrice}</Text>
+                <Text style={style.cardPrice}>{item.set.total} left</Text>
             </View>
         </View>
         <TouchableOpacity style={style.cardBtn} onPress={() => {
@@ -111,7 +111,7 @@ const style = StyleSheet.create({
     },
     cardPriceContainer: {
         flexDirection: 'row',
-        width: wp(60),
+        width: wp(70),
         justifyContent: 'space-between',
         // backgroundColor : 'red',
         paddingHorizontal: wp(20)
