@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { cartListAtom, totalPriceAtom } from '../utils/atoms';
+import { cartListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
 import { CardType } from '../types/cardType';
 import SearchIcon from '../assets/icons/SearchIcon';
 
@@ -58,6 +58,7 @@ interface PokemonCardProps {
 const Card = ({ item }: PokemonCardProps) => {
     const [, setCartsList] = useAtom(cartListAtom)
     const [, setTotalPrice] = useAtom(totalPriceAtom)
+    const [, setTotalCard] = useAtom(totalCartCardsAtom)
 
     return <View style={style.cardContainer}>
         <Image style={style.cardImage} source={{ uri: item.images.small, width: wp(40), height: hp(30) }} />
@@ -73,6 +74,7 @@ const Card = ({ item }: PokemonCardProps) => {
             if (!item.selected) {
                 setCartsList((prevCartListData: any) => [...prevCartListData, { cardType: item, cartCount: 1 }])
                 setTotalPrice((prevTotal) => prevTotal + item.cardmarket.prices.averageSellPrice)
+                setTotalCard((prevTotalCard) => prevTotalCard + 1)
                 item.selected = true
             }
         }}>

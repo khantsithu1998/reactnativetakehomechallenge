@@ -3,7 +3,7 @@ import { Modal, View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { cartListAtom, showCartsModalShowAtom, totalPriceAtom } from '../utils/atoms';
+import { cartListAtom, showCartsModalShowAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
 import CartsList from './CartsList';
 import SuccessIcon from '../assets/icons/SuccessIcon';
 import CancelIcon from '../assets/icons/CancelIcon';
@@ -11,8 +11,10 @@ import CancelIcon from '../assets/icons/CancelIcon';
 export default function CartsModal() {
     const [, setShowCartsModal] = useAtom(showCartsModalShowAtom)
     const [paySuccess, setPaySuccess] = useState(false)
+    const [totalCard,setTotalCard]= useAtom(totalCartCardsAtom)
     const [totalPrice, setTotalPrice] = useAtom(totalPriceAtom)
     const [cartsList, setCartsList] = useAtom(cartListAtom);
+
 
     return <Modal transparent={true}>
         <View style={{
@@ -29,13 +31,14 @@ export default function CartsModal() {
                 </View>
                 <TouchableOpacity style={style.clearAllBtn} onPress={() => {
                     setTotalPrice(0);
+                    setTotalCard(0)
                     setCartsList([]);
                 }}>
                     <Text style={style.clearAllBtnText}>Clear All</Text>
                 </TouchableOpacity>
                 <View style={style.totalCardsContainer}>
                     <Text style={style.totalCardsText}>Total Cards</Text>
-                    <Text style={style.totalCardsCountText}>{cartsList.length}</Text>
+                    <Text style={style.totalCardsCountText}>{totalCard}</Text>
                 </View>
                 <View style={style.totalPriceContainer}>
                     <Text style={style.totalPriceText}>Total Price</Text>

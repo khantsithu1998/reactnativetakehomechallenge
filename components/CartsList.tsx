@@ -3,14 +3,13 @@ import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react
 import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { cartListAtom } from '../utils/atoms';
+import { cartListAtom, totalCartCards, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
 import { CardType, SelectedCardType } from '../types/cardType';
 import CartAddIcon from '../assets/icons/CartAddIcon';
 import CartRemoveIcon from '../assets/icons/CartRemoveIcon';
 
 export default function CartsList() {
-    const [cartsList, setCartsList] = useAtom<SelectedCardType[]>(cartListAtom)
-    const [selectedCartsList,] = useState()
+    const [cartsList, ] = useAtom<SelectedCardType[]>(cartListAtom)
     const renderItem = ({ item }: { item: SelectedCardType }) => <Cart item={item} />
 
     return cartsList.length > 0 ? <FlatList
@@ -27,6 +26,8 @@ interface CartProps {
 
 const Cart = ({ item }: CartProps) => {
     const [cartsList, setCartsList] = useAtom<SelectedCardType[]>(cartListAtom)
+    const [, setTotalPrice] = useAtom<number>(totalPriceAtom)
+    const [, setTotalCard] = useAtom<number>(totalCartCardsAtom)
 
     const updateCartCount = (item: SelectedCardType, count: number, cartsList: SelectedCardType[], setCartsList: (cartsList: SelectedCardType[]) => void) => {
         const newCartsList = cartsList.map((cartItem) => {
@@ -35,6 +36,8 @@ const Cart = ({ item }: CartProps) => {
             }
             return cartItem;
         });
+        setTotalPrice((prevTotalPrice : number) => prevTotalPrice + item.cardType.cardmarket.prices.averageSellPrice);
+        setTotalCard((prevTotalCardCount : number) => prevTotalCardCount + 1)
         setCartsList(newCartsList);
     };
 
@@ -45,6 +48,8 @@ const Cart = ({ item }: CartProps) => {
             }
             return cartItem;
         });
+        setTotalPrice((prevTotalPrice : number) => prevTotalPrice - item.cardType.cardmarket.prices.averageSellPrice);
+        setTotalCard((prevTotalCardCount : number) => prevTotalCardCount - 1)
         setCartsList(newCartsList);
     };
 
