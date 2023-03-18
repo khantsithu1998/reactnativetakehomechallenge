@@ -117,6 +117,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
     },
     successText: {
+        fontFamily : 'Poppins-Regular',
         marginTop: hp(2)
     }
 })
