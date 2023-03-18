@@ -43,10 +43,15 @@ export default function PokemonsList() {
             renderItem={renderItem}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
-            ListFooterComponent={() => (<TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
-                <SearchIcon width={hp(2)} height={hp(2)} />
-                <Text>show more</Text>
-            </TouchableOpacity>)} />
+            onEndReached={loadMore}
+            ListFooterComponent={() => {
+                return (<>
+                    {cardsListData.length > 10 && page > 1 ? <ActivityIndicator color={'#FDCE29'} size={'small'}/> : <TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
+                        <SearchIcon width={hp(2)} height={hp(2)} />
+                        <Text>show more</Text>
+                    </TouchableOpacity>}
+                </>)
+            }} />
     }
     return <></>
 }
@@ -65,10 +70,10 @@ const Card = ({ item }: PokemonCardProps) => {
         <View style={style.cardInnerContainer}>
             <Text style={style.cardName}>{item.name ?? ''}</Text>
             <Text style={style.cardRarity}>{item.rarity ?? ''}</Text>
-            <View style={style.cardPriceContainer}>
+            {typeof item.cardmarket !== 'undefined' ? <View style={style.cardPriceContainer}>
                 <Text style={style.cardPrice}>${item.cardmarket.prices.averageSellPrice ?? ''}</Text>
                 <Text style={style.cardPrice}>{item.set.total ?? 0} left</Text>
-            </View>
+            </View>: <></>}
         </View>
         <TouchableOpacity disabled={item.selected} style={{ ...style.cardBtn, backgroundColor: item.selected ? 'black' : '#FDCE29' }} onPress={() => {
             if (!item.selected) {
