@@ -68,7 +68,7 @@ const Card = ( item : { name: String, images: any, rarity: String }) => {
                 <Text style={style.cardPrice}>3 left</Text>
             </View>
         </View>
-        <TouchableOpacity style={style.cardBtn} onPress={() => setCartsList([...cartListAtom, item])}>
+        <TouchableOpacity style={style.cardBtn} onPress={() => setCartsList((prevCartListData : any) => [...prevCartListData,item])}>
             <Text style={style.cardBtnText}>Select Card</Text>
         </TouchableOpacity>
     </View>
