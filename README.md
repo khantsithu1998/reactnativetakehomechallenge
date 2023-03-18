@@ -1,7 +1,7 @@
 # React Native Take Home Challenge
  This is a React Native application created as part of a take-home challenge. This README will guide you through the steps to build and run the application.
 
-# Installation
+## Installation
 Before you begin, make sure you have the following installed on your system:
 
 Node.js (version 10.0 or higher)
@@ -17,37 +17,53 @@ To build and run the app, follow these steps:
 
 Clone the repository to your local machine:
 
-```git clone https://github.com/khantsithu1998/reactnativetakehomechallenge.git```
+```
+git clone https://github.com/khantsithu1998/reactnativetakehomechallenge.git
+```
 
 Navigate to the project directory:
 
-```cd reactnativetakehomechallenge```
+```
+cd reactnativetakehomechallenge
+```
 
 Install the dependencies:
 
-```npm install```
+yarn 
 
-    or
-    
-```yarn install```
+```sh
+yarn install
+```
+
+or
+
+npm
+```sh
+npm install
+```
+
 
 For iOS
-```cd ios```
-
-``` pod install ```
-
-```cd ..```
+```
+cd ios
+pod install 
+cd ..
+```
 
 Run the app:
 
 For Android
 
-```npx react-native run-android``` 
+```
+npx react-native run-android
+``` 
 
-or
 
 For iOS
 
-```npx react-native run-ios``` 
+```
+npx react-native run-ios
+``` 
+
 This will build the app and launch it on an Android or iOS emulator, depending on the platform you specified.
 
