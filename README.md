@@ -21,7 +21,7 @@ Clone the repository to your local machine:
 
 Navigate to the project directory:
 
-```cd React-Native-Take-Home-Challenge```
+```cd reactnativetakehomechallenge```
 
 Install the dependencies:
 

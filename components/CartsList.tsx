@@ -3,7 +3,7 @@ import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react
 import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { cartListAtom, totalCartCards, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
+import { cartListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
 import { CardType, SelectedCardType } from '../types/cardType';
 import CartAddIcon from '../assets/icons/CartAddIcon';
 import CartRemoveIcon from '../assets/icons/CartRemoveIcon';
@@ -26,8 +26,8 @@ interface CartProps {
 
 const Cart = ({ item }: CartProps) => {
     const [cartsList, setCartsList] = useAtom<SelectedCardType[]>(cartListAtom)
-    const [, setTotalPrice] = useAtom<number>(totalPriceAtom)
-    const [, setTotalCard] = useAtom<number>(totalCartCardsAtom)
+    const [, setTotalPrice] = useAtom(totalPriceAtom)
+    const [, setTotalCard] = useAtom(totalCartCardsAtom)
 
     const updateCartCount = (item: SelectedCardType, count: number, cartsList: SelectedCardType[], setCartsList: (cartsList: SelectedCardType[]) => void) => {
         const newCartsList = cartsList.map((cartItem) => {
