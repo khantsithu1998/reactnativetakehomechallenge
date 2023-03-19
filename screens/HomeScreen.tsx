@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar , TextInput} from 'react-native'
+import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar, TextInput } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PokemonsList from '../components/PokemonsList';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -7,23 +7,23 @@ import { totalCartCardsAtom } from '../utils/atoms';
 import BasketIcon from '../assets/icons/BasketIcon';
 import PokemonLogo from '../assets/icons/PokemonLogo';
 
-export default function HomeScreen({ navigation }: any ) {
+export default function HomeScreen({ navigation }: any) {
     const [totalCards,] = useAtom(totalCartCardsAtom)
 
     return (
         <SafeAreaView style={styles.homeWrapper}>
             <StatusBar
-        animated={true}
-        barStyle={'dark-content'}
-        backgroundColor="white"
-      />
+                animated={true}
+                barStyle={'dark-content'}
+                backgroundColor="white"
+            />
             <View style={styles.homeBarContainer}>
                 <Text style={styles.homeBarTitle}>TCG Marketplace</Text>
                 <View style={styles.logoContainer}>
-                <PokemonLogo width={hp(7)} height={hp(7)}/>
+                    <PokemonLogo width={hp(7)} height={hp(7)} />
                 </View>
             </View>
-            
+
             {/* <PokemonSearchForm/> */}
             <View style={styles.listContainer}>
                 <PokemonsList />
@@ -43,32 +43,32 @@ export default function HomeScreen({ navigation }: any ) {
 }
 
 const styles = StyleSheet.create({
-    homeWrapper : {
-        flex : 1
+    homeWrapper: {
+        flex: 1
     },
-    homeBarContainer : {
-        backgroundColor : 'white',
-        justifyContent : 'center',
-        alignItems : 'center',
-        paddingVertical : hp(4),
-        marginBottom : hp(3)
+    homeBarContainer: {
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: hp(4),
+        marginBottom: hp(3)
     },
-    logoContainer  :{
-        backgroundColor : 'white',
-        position : 'absolute',
-        borderRadius : hp(3),
-        bottom : -hp(3)
+    logoContainer: {
+        backgroundColor: 'white',
+        position: 'absolute',
+        borderRadius: hp(3),
+        bottom: -hp(3)
     },
-    homeBarTitle : {
-        alignSelf : 'center',
-        color : 'black',
-        fontSize : wp(5),
-        fontWeight : 'bold'
+    homeBarTitle: {
+        alignSelf: 'center',
+        color: 'black',
+        fontSize: wp(5),
+        fontWeight: 'bold'
     },
     listContainer: {
-        justifyContent : 'center',
-        alignItems : 'center',
-        flex : 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
         zIndex: 0
     },
     cartBtn: {
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         width: wp(30),
         alignSelf: 'center',
         borderRadius: wp(3),
-        position : 'absolute',
+        position: 'absolute',
         bottom: hp(10),
         paddingVertical: hp(1),
         paddingHorizontal: wp(5),
