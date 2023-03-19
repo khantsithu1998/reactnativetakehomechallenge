@@ -17,7 +17,7 @@ export default function CartsList() {
         data={selectedCardsList}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => item.cardType.name} /> : <></>
+        keyExtractor={item => item.cardType.id.toString()} /> : <></>
 }
 
 interface CartProps {
@@ -45,7 +45,7 @@ const Cart = ({ item }: CartProps) => {
                 <View style={styles.cartBtnContainer}>
                     <TouchableOpacity onPress={() => {
                         if (item.cartCount == item.cardType.set.total) {
-
+                            console.log('show toast : there are no cards instock left')
                         } else {
                             updateCartCount(item, cardsList, setCardsList);
                         }
@@ -55,8 +55,6 @@ const Cart = ({ item }: CartProps) => {
                     <TouchableOpacity onPress={() => {
                         if (item.cartCount > 0) {
                             decreaseCartCount(item, cardsList, setCardsList);
-                        } else {
-
                         }
                     }}>
                         <CartRemoveIcon width={hp(2)} height={hp(2)} />

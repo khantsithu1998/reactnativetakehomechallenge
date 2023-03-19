@@ -10,7 +10,7 @@ const useCartCount = () => {
   const updateCartCount = useCallback(
     (item: SelectedCardType, cardsList: SelectedCardType[], setCardsList: (cardsList: SelectedCardType[]) => void) => {
       const newCardsList = cardsList.map((cardItem) => {
-        if (cardItem.cardType.name === item.cardType.name) {
+        if (cardItem.cardType.id === item.cardType.id) {
           if (item.cartCount == 0) {
             cardItem.cardType.selected = true;
           }
@@ -28,7 +28,7 @@ const useCartCount = () => {
   const decreaseCartCount = useCallback(
     (item: SelectedCardType, cardsList: SelectedCardType[], setCardsList: (cardsList: SelectedCardType[]) => void) => {
       const newCardsList = cardsList.map((cardItem) => {
-        if (cardItem.cardType.name === item.cardType.name) {
+        if (cardItem.cardType.id === item.cardType.id) {
           if (item.cartCount == 1) {
             cardItem.cardType.selected = false;
           }
