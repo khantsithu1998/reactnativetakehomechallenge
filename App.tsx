@@ -11,11 +11,18 @@ import {
   StyleSheet,
 } from 'react-native';
 import RootStackScreen from './screens/RootStackScreen';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
 function App(): JSX.Element {
+  const queryClient = new QueryClient()
 
   return (
-    <RootStackScreen />
+    <QueryClientProvider client={queryClient}>
+      <RootStackScreen />
+    </QueryClientProvider>
   );
 }
 

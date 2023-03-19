@@ -31,8 +31,8 @@ const Cart = ({ item }: CartProps) => {
         <Image style={styles.cardImage} source={{ uri: item.cardType.images.small, width: wp(20), height: hp(14) }} />
         <View style={styles.midContainer}>
             <Text style={styles.cardName}>{item.cardType.name}</Text>
-            <Text style={styles.perCardText}>${item.cardType.cardmarket.prices.averageSellPrice} per card</Text>
-
+            {typeof item.cardType.cardmarket !== 'undefined' ? <Text style={styles.perCardText}>${item.cardType.cardmarket.prices.averageSellPrice} per card</Text>
+                : <></>}
             <View style={styles.cardLeftContainer}>
                 <Text style={styles.cardLeftCountText}>{item.cardType.set.total}</Text>
                 <Text style={styles.cardLeftText}> cards left</Text>

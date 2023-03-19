@@ -53,4 +53,13 @@ export const APIClient = {
            
         }
     },
+
+    fetchData : async (page: number) => {
+        const response = await fetch(`https://api.pokemontcg.io/v2/cards?pageSize=12&page=${page}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    }
 };

@@ -7,47 +7,52 @@ import { cardsListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atom
 import { CardType, SelectedCardType } from '../types/cardType';
 import SearchIcon from '../assets/icons/SearchIcon';
 import useCartCount from '../hooks/cartHooks';
+import { useQuery } from '@tanstack/react-query';
 
 export default function PokemonsList() {
     const [cardsListData, setCardsListData] = useAtom(cardsListAtom);
-    const [apiStatus, setApiStatus] = useState(ApiStatus.Loading);
+    // const [apiStatus, setApiStatus] = useState(ApiStatus.Loading);
     const [message, setMessage] = useState('')
     const [page, setPage] = useState(1)
+    const [isInitialLoading, setIsInitialLoading] = useState(true)
+    const [isPaginationLoading, setIsPaginationLoading] = useState(false)
+    const { data, isLoading, isSuccess, isError } = useQuery(["cardsListData", page], () =>
+        APIClient.fetchData(page)
+    );
 
     useEffect(() => {
-        APIClient.get<any[]>(`https://api.pokemontcg.io/v2/cards?pageSize=12&page=${page}`)
-            .then((response) => {
-                setApiStatus(response.status);
-                if (response.status === ApiStatus.Success) {
-                    setCardsListData((prevCardsListData: SelectedCardType[]) => {
-                        const newTypeData = response.data.data.map((item: CardType) => {
-                            return { cardType: item, cartCount: 0 };
-                        })
-                        return [...prevCardsListData, ...newTypeData ?? []];
-                    })
-                }
-                setMessage(response.message ?? '');
+        if (data && isSuccess) {
+            setIsInitialLoading(false)
+            setIsPaginationLoading(false)
+            setCardsListData((prevCardsListData: SelectedCardType[]) => {
+                const newTypeData = data.data.map((item: CardType) => {
+                    return { cardType: item, cartCount: 0 };
+                });
+                return [...prevCardsListData, ...newTypeData ?? []];
             });
-    }, [page]);
+        }
+    }, [data, isSuccess]);
+
 
     const loadMore = () => {
+        setIsPaginationLoading(true)
         setPage(page + 1);
     };
 
-    if (apiStatus === ApiStatus.Error || apiStatus === ApiStatus.Failure) {
+    if (isError) {
         return <Text>{message}</Text>
     }
 
-    if (apiStatus === ApiStatus.Loading) return <ActivityIndicator color={'#FDCE29'} size={'large'} />
+    if (isInitialLoading) return <ActivityIndicator color={'#FDCE29'} size={'large'} />
 
     const renderItem = ({ item }: { item: SelectedCardType }) => <Card item={item} />
 
-    if (cardsListData && apiStatus == ApiStatus.Success) {
+    if (cardsListData) {
 
         return <FlatList
             data={cardsListData}
             renderItem={renderItem}
-            keyExtractor={item => item.cardType.id}
+            keyExtractor={item => item.cardType.id.toString()}
             showsVerticalScrollIndicator={false}
             onEndReached={loadMore}
             ListFooterComponent={() => {
@@ -57,7 +62,14 @@ export default function PokemonsList() {
                         <Text>show more</Text>
                     </TouchableOpacity>}
                 </>)
-            }} />
+            }}
+            ListEmptyComponent={() => (
+                <View style={style.emptyViewContainer}>
+                    <Text style={style.emptyViewText}>No data available</Text>
+                </View>
+            )}
+            />
+
     }
     return <></>
 }
@@ -151,8 +163,19 @@ const style = StyleSheet.create({
     showMoreBtn: {
         alignSelf: 'center',
         alignItems: 'center',
-        marginBottom: hp(2)
+        fontFamily : 'Poppins-Regular',
+        marginBottom: hp(2),
+       
         // marginVertical : hp(10),
+    },
+    emptyViewContainer : {
+
+    },
+    emptyViewText : {
+        alignSelf: 'center',
+        alignItems: 'center',
+        fontFamily : 'Poppins-Regular',
+        marginBottom: hp(2)
     }
 
 });
