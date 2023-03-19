@@ -7,6 +7,7 @@ import { cardsListAtom, showCartsModalShowAtom, totalCartCardsAtom, totalPriceAt
 import CartsList from './CartsList';
 import SuccessIcon from '../assets/icons/SuccessIcon';
 import CancelIcon from '../assets/icons/CancelIcon';
+import { CardType, SelectedCardType } from '../types/cardType';
 
 export default function CartsModal() {
     const [, setShowCartsModal] = useAtom(showCartsModalShowAtom)
@@ -32,7 +33,15 @@ export default function CartsModal() {
                 <TouchableOpacity style={style.clearAllBtn} onPress={() => {
                     setTotalPrice(0);
                     setTotalCard(0)
-                    setCardsList([]);
+                    setCardsList((prevCardsListData: SelectedCardType[]) => {
+                        prevCardsListData.forEach((item) => {
+                            if (item.cartCount > 0) {
+                                item.cardType.selected = false
+                                item.cartCount = 0
+                            }
+                        })
+                        return prevCardsListData;
+                    });
                 }}>
                     <Text style={style.clearAllBtnText}>Clear All</Text>
                 </TouchableOpacity>
