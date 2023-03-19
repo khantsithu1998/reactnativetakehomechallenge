@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Modal, View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { useState } from 'react';
+import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { cardsListAtom, showCartsModalShowAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
-import CartsList from './CartsList';
+import { cardsListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
+import CartsList from '../components/CartsList';
 import SuccessIcon from '../assets/icons/SuccessIcon';
 import CancelIcon from '../assets/icons/CancelIcon';
-import { CardType, SelectedCardType } from '../types/cardType';
+import { SelectedCardType } from '../types/cardType';
 
-export default function CartsModal() {
-    const [, setShowCartsModal] = useAtom(showCartsModalShowAtom)
+export default function CartsModal({navigation } : any) {
     const [paySuccess, setPaySuccess] = useState(false)
     const [totalCard,setTotalCard]= useAtom(totalCartCardsAtom)
     const [totalPrice, setTotalPrice] = useAtom(totalPriceAtom)
@@ -57,7 +56,7 @@ export default function CartsModal() {
                     <Text style={style.payNowBtnText}>Pay Now</Text>
                 </TouchableOpacity>
             </>}
-            <TouchableOpacity onPress={() => setShowCartsModal(false)} style={style.closeBtn}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={style.closeBtn}>
                 <CancelIcon width={hp(2)} height={hp(2)} />
             </TouchableOpacity>
         </View>

@@ -2,18 +2,13 @@ import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar , TextInput
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PokemonsList from '../components/PokemonsList';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useState } from 'react';
 import { useAtom } from 'jotai';
-import { showCartsModalShowAtom, totalCartCardsAtom, cardsListAtom } from '../utils/atoms';
-import CartsModal from '../components/CartsModal';
+import { totalCartCardsAtom } from '../utils/atoms';
 import BasketIcon from '../assets/icons/BasketIcon';
 import PokemonLogo from '../assets/icons/PokemonLogo';
-import PokemonSearchForm from '../components/PokemonSearchForm';
 
-export default function HomeScreen({ navigation }: any) {
-    const [cardsList,] = useAtom<any[]>(cardsListAtom)
+export default function HomeScreen({ navigation }: any ) {
     const [totalCards,] = useAtom(totalCartCardsAtom)
-    const [showCartsModal, setShowCartsModal] = useAtom(showCartsModalShowAtom)
 
     return (
         <SafeAreaView style={styles.homeWrapper}>
@@ -34,7 +29,7 @@ export default function HomeScreen({ navigation }: any) {
                 <PokemonsList />
             </View>
             {totalCards > 0 ? <TouchableOpacity style={styles.cartBtn} onPress={() => {
-                setShowCartsModal(true);
+                navigation.navigate('CartsModal')
             }}>
                 <BasketIcon width={hp(2.5)} height={hp(2.5)} />
                 <Text style={styles.cartText}>View Cart</Text>
@@ -43,7 +38,6 @@ export default function HomeScreen({ navigation }: any) {
                 </View>
 
             </TouchableOpacity> : <></>}
-            {showCartsModal ? <CartsModal /> : <></>}
         </SafeAreaView>
     );
 }
