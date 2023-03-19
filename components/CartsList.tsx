@@ -1,57 +1,31 @@
-import { useEffect, useState } from 'react';
+
 import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { cartListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
-import { CardType, SelectedCardType } from '../types/cardType';
+import { cardsListAtom, } from '../utils/atoms';
+import { SelectedCardType } from '../types/cardType';
 import CartAddIcon from '../assets/icons/CartAddIcon';
 import CartRemoveIcon from '../assets/icons/CartRemoveIcon';
+import useCartCount from '../hooks/cartHooks'
 
 export default function CartsList() {
-    const [cartsList, ] = useAtom<SelectedCardType[]>(cartListAtom)
+    const [cardsList,] = useAtom<SelectedCardType[]>(cardsListAtom)
     const renderItem = ({ item }: { item: SelectedCardType }) => <Cart item={item} />
 
-    return cartsList.length > 0 ? <FlatList
-        data={cartsList}
+    return cardsList.length > 0 ? <FlatList
+        data={cardsList}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => 'cart' + '-' + item.cardType.name} /> : <></>
+        keyExtractor={item => item.cardType.name} /> : <></>
 }
 
 interface CartProps {
     item: SelectedCardType
 }
 
-
 const Cart = ({ item }: CartProps) => {
-    const [cartsList, setCartsList] = useAtom<SelectedCardType[]>(cartListAtom)
-    const [, setTotalPrice] = useAtom(totalPriceAtom)
-    const [, setTotalCard] = useAtom(totalCartCardsAtom)
-
-    const updateCartCount = (item: SelectedCardType, count: number, cartsList: SelectedCardType[], setCartsList: (cartsList: SelectedCardType[]) => void) => {
-        const newCartsList = cartsList.map((cartItem) => {
-            if (cartItem.cardType.name === item.cardType.name) {
-                return { ...cartItem, cartCount: count };
-            }
-            return cartItem;
-        });
-        setTotalPrice((prevTotalPrice : number) => prevTotalPrice + item.cardType.cardmarket.prices.averageSellPrice);
-        setTotalCard((prevTotalCardCount : number) => prevTotalCardCount + 1)
-        setCartsList(newCartsList);
-    };
-
-    const decreaseCartCount = (item: SelectedCardType, cartsList: SelectedCardType[], setCartsList: (cartsList: SelectedCardType[]) => void) => {
-        const newCartsList = cartsList.map((cartItem) => {
-            if (cartItem.cardType.name === item.cardType.name) {
-                return { ...cartItem, cartCount: cartItem.cartCount - 1 };
-            }
-            return cartItem;
-        });
-        setTotalPrice((prevTotalPrice : number) => prevTotalPrice - item.cardType.cardmarket.prices.averageSellPrice);
-        setTotalCard((prevTotalCardCount : number) => prevTotalCardCount - 1)
-        setCartsList(newCartsList);
-    };
+    const [cardsList, setCardsList] = useAtom<SelectedCardType[]>(cardsListAtom)
+    const { updateCartCount, decreaseCartCount } = useCartCount();
 
     return <View style={styles.cartContainer}>
         <Image style={styles.cardImage} source={{ uri: item.cardType.images.small, width: wp(20), height: hp(14) }} />
@@ -72,18 +46,14 @@ const Cart = ({ item }: CartProps) => {
                         if (item.cartCount == item.cardType.set.total) {
 
                         } else {
-                            const updatedCount = item.cartCount + 1;
-                            updateCartCount(item, updatedCount, cartsList, setCartsList);
-                            console.log(updatedCount);
+                            updateCartCount(item, cardsList, setCardsList);
                         }
                     }}>
                         <CartAddIcon width={hp(2)} height={hp(2)} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         if (item.cartCount > 0) {
-                            const updatedCount = item.cartCount - 1;
-                            decreaseCartCount(item, cartsList, setCartsList);
-                            console.log(updatedCount);
+                            decreaseCartCount(item, cardsList, setCardsList);
                         } else {
 
                         }
@@ -140,7 +110,7 @@ const styles = StyleSheet.create({
         color: '#298BFD',
         fontFamily: 'Poppins-Bold',
         marginBottom: hp(2),
-        marginRight : wp(2)
+        marginRight: wp(2)
     },
     priceText: {
         color: '#1D1C1C',

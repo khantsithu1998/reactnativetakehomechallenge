@@ -3,7 +3,7 @@ import { Modal, View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { cartListAtom, showCartsModalShowAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
+import { cardsListAtom, showCartsModalShowAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
 import CartsList from './CartsList';
 import SuccessIcon from '../assets/icons/SuccessIcon';
 import CancelIcon from '../assets/icons/CancelIcon';
@@ -13,7 +13,7 @@ export default function CartsModal() {
     const [paySuccess, setPaySuccess] = useState(false)
     const [totalCard,setTotalCard]= useAtom(totalCartCardsAtom)
     const [totalPrice, setTotalPrice] = useAtom(totalPriceAtom)
-    const [cartsList, setCartsList] = useAtom(cartListAtom);
+    const [, setCardsList] = useAtom(cardsListAtom);
 
 
     return <Modal transparent={true}>
@@ -32,7 +32,7 @@ export default function CartsModal() {
                 <TouchableOpacity style={style.clearAllBtn} onPress={() => {
                     setTotalPrice(0);
                     setTotalCard(0)
-                    setCartsList([]);
+                    setCardsList([]);
                 }}>
                     <Text style={style.clearAllBtnText}>Clear All</Text>
                 </TouchableOpacity>

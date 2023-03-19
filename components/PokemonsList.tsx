@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react';
 import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { APIClient, ApiStatus } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { cartListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
-import { CardType } from '../types/cardType';
+import { cardsListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
+import { CardType, SelectedCardType } from '../types/cardType';
 import SearchIcon from '../assets/icons/SearchIcon';
+import useCartCount from '../hooks/cartHooks';
 
 export default function PokemonsList() {
-    const [cardsListData, setCardsListData] = useState<CardType[] | any>([]);
+    const [cardsListData, setCardsListData] = useAtom(cardsListAtom);
     const [apiStatus, setApiStatus] = useState(ApiStatus.Loading);
     const [message, setMessage] = useState('')
     const [page, setPage] = useState(1)
@@ -18,7 +19,12 @@ export default function PokemonsList() {
             .then((response) => {
                 setApiStatus(response.status);
                 if (response.status === ApiStatus.Success) {
-                    setCardsListData((prevCardsListData: any) => [...prevCardsListData, ...response.data.data ?? []])
+                    setCardsListData((prevCardsListData: SelectedCardType[]) => {
+                        const newTypeData = response.data.data.map((item: CardType) => {
+                            return { cardType: item, cartCount: 0 };
+                        })
+                        return [...prevCardsListData, ...newTypeData ?? []];
+                    })
                 }
                 setMessage(response.message ?? '');
             });
@@ -28,25 +34,25 @@ export default function PokemonsList() {
         setPage(page + 1);
     };
 
-    const renderItem = ({ item }: { item: CardType }) => <Card item={item} />
-
     if (apiStatus === ApiStatus.Error || apiStatus === ApiStatus.Failure) {
         return <Text>{message}</Text>
     }
 
     if (apiStatus === ApiStatus.Loading) return <ActivityIndicator color={'#FDCE29'} size={'large'} />
 
+    const renderItem = ({ item }: { item: SelectedCardType }) => <Card item={item} />
+
     if (cardsListData && apiStatus == ApiStatus.Success) {
 
         return <FlatList
             data={cardsListData}
             renderItem={renderItem}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.cardType.id}
             showsVerticalScrollIndicator={false}
             onEndReached={loadMore}
             ListFooterComponent={() => {
                 return (<>
-                    {cardsListData.length > 10 && page > 1 ? <ActivityIndicator color={'#FDCE29'} size={'small'}/> : <TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
+                    {cardsListData.length > 10 && page > 1 ? <ActivityIndicator color={'#FDCE29'} size={'small'} /> : <TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
                         <SearchIcon width={hp(2)} height={hp(2)} />
                         <Text>show more</Text>
                     </TouchableOpacity>}
@@ -57,33 +63,29 @@ export default function PokemonsList() {
 }
 
 interface PokemonCardProps {
-    item: CardType
+    item: SelectedCardType
 }
 
 const Card = ({ item }: PokemonCardProps) => {
-    const [, setCartsList] = useAtom(cartListAtom)
-    const [, setTotalPrice] = useAtom(totalPriceAtom)
-    const [, setTotalCard] = useAtom(totalCartCardsAtom)
+    const [cardsList, setCardsList] = useAtom(cardsListAtom)
+    const { updateCartCount } = useCartCount();
 
     return <View style={style.cardContainer}>
-        <Image style={style.cardImage} source={{ uri: item.images.small, width: wp(40), height: hp(30) }} />
+        {typeof item.cardType.images !== 'undefined' ? <Image style={style.cardImage} source={{ uri: item.cardType.images.small, width: wp(40), height: hp(30) }} /> : <></>}
         <View style={style.cardInnerContainer}>
-            <Text style={style.cardName}>{item.name ?? ''}</Text>
-            <Text style={style.cardRarity}>{item.rarity ?? ''}</Text>
-            {typeof item.cardmarket !== 'undefined' ? <View style={style.cardPriceContainer}>
-                <Text style={style.cardPrice}>${item.cardmarket.prices.averageSellPrice ?? ''}</Text>
-                <Text style={style.cardPrice}>{item.set.total ?? 0} left</Text>
-            </View>: <></>}
+            <Text style={style.cardName}>{item.cardType.name ?? ''}</Text>
+            <Text style={style.cardRarity}>{item.cardType.rarity ?? ''}</Text>
+            {typeof item.cardType.cardmarket !== 'undefined' ? <View style={style.cardPriceContainer}>
+                <Text style={style.cardPrice}>${item.cardType.cardmarket.prices.averageSellPrice ?? ''}</Text>
+                <Text style={style.cardPrice}>{item.cardType.set.total ?? 0} left</Text>
+            </View> : <></>}
         </View>
-        <TouchableOpacity disabled={item.selected} style={{ ...style.cardBtn, backgroundColor: item.selected ? 'black' : '#FDCE29' }} onPress={() => {
-            if (!item.selected) {
-                setCartsList((prevCartListData: any) => [...prevCartListData, { cardType: item, cartCount: 1 }])
-                setTotalPrice((prevTotal) => prevTotal + item.cardmarket.prices.averageSellPrice)
-                setTotalCard((prevTotalCard) => prevTotalCard + 1)
-                item.selected = true
+        <TouchableOpacity disabled={item.cardType.selected} style={{ ...style.cardBtn, backgroundColor: item.cardType.selected ? 'black' : '#FDCE29' }} onPress={() => {
+            if (!item.cardType.selected) {
+                updateCartCount(item, cardsList, setCardsList);
             }
         }}>
-            <Text style={{ ...style.cardBtnText, color: item.selected ? 'white' : 'black' }}>{item.selected ? 'Selected Card' : 'Select Card'}</Text>
+            <Text style={{ ...style.cardBtnText, color: item.cardType.selected ? 'white' : 'black' }}>{item.cardType.selected ? 'Selected Card' : 'Select Card'}</Text>
         </TouchableOpacity>
     </View>
 };
