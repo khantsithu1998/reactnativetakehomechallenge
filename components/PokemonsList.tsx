@@ -112,7 +112,7 @@ const style = StyleSheet.create({
         marginBottom: hp(6)
     },
     cardImage: {
-        marginBottom: -wp(20),
+        marginBottom: -hp(9),
         zIndex: 1
     },
     cardInnerContainer: {
