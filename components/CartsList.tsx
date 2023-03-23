@@ -50,14 +50,14 @@ const Cart = ({ item }: CartProps) => {
                             updateCartCount(item, cardsList, setCardsList);
                         }
                     }}>
-                        <CartAddIcon width={hp(2)} height={hp(2)} />
+                        <CartAddIcon width={hp(2.4)} height={hp(2.4)} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         if (item.cartCount > 0) {
                             decreaseCartCount(item, cardsList, setCardsList);
                         }
                     }}>
-                        <CartRemoveIcon width={hp(2)} height={hp(2)} />
+                        <CartRemoveIcon width={hp(2.4)} height={hp(2.4)} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -113,12 +113,13 @@ const styles = StyleSheet.create({
     },
     priceText: {
         color: '#1D1C1C',
-        fontFamily: 'Poppins-Regular'
-
+        fontFamily: 'Poppins-Regular',
+        marginBottom : hp(2)
     },
     pricePerText: {
         color: '#298BFD',
-        fontFamily: 'Poppins-Bold'
+        fontFamily: 'Poppins-Bold',
+        fontSize : hp(2)
     },
     cartCountContainer: {
         flexDirection: 'row'
