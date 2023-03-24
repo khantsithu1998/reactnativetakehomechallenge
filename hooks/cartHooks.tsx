@@ -43,7 +43,23 @@ const useCartCount = () => {
     [setTotalPrice, setTotalCard]
   );
 
-  return { updateCartCount, decreaseCartCount };
+  const clearCartCount = useCallback(
+    (cardsList: SelectedCardType[], setCardsList: (cardsList: SelectedCardType[]) => void) => {
+      const newCardsList = cardsList.map((item) => {
+        if (item.cartCount > 0) {
+          item.cardType.selected = false
+          item.cartCount = 0
+        }
+        return item;
+      })
+      setTotalPrice(0);
+      setTotalCard(0)
+      setCardsList(newCardsList)
+    },
+    [setTotalPrice, setTotalCard]
+  );
+
+  return { updateCartCount, decreaseCartCount, clearCartCount };
 };
 
 export default useCartCount;

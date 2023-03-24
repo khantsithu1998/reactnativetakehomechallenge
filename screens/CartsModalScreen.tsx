@@ -8,13 +8,14 @@ import CartsList from '../components/CartsList';
 import SuccessIcon from '../assets/icons/SuccessIcon';
 import CancelIcon from '../assets/icons/CancelIcon';
 import { SelectedCardType } from '../types/cardType';
+import useCartCount from '../hooks/cartHooks';
 
-export default function CartsModal({navigation } : any) {
+export default function CartsModal({ navigation }: any) {
     const [paySuccess, setPaySuccess] = useState(false)
-    const [totalCard,setTotalCard]= useAtom(totalCartCardsAtom)
-    const [totalPrice, setTotalPrice] = useAtom(totalPriceAtom)
-    const [, setCardsList] = useAtom(cardsListAtom);
-
+    const [totalCard,] = useAtom(totalCartCardsAtom)
+    const [totalPrice,] = useAtom(totalPriceAtom)
+    const [cardsList, setCardsList] = useAtom(cardsListAtom);
+    const { clearCartCount } = useCartCount()
 
     return <Modal transparent={true}>
         <View style={{
@@ -30,17 +31,7 @@ export default function CartsModal({navigation } : any) {
                     <CartsList />
                 </View>
                 <TouchableOpacity style={style.clearAllBtn} onPress={() => {
-                    setTotalPrice(0);
-                    setTotalCard(0)
-                    setCardsList((prevCardsListData: SelectedCardType[]) => {
-                        prevCardsListData.forEach((item) => {
-                            if (item.cartCount > 0) {
-                                item.cardType.selected = false
-                                item.cartCount = 0
-                            }
-                        })
-                        return prevCardsListData;
-                    });
+                    clearCartCount(cardsList, setCardsList);
                 }}>
                     <Text style={style.clearAllBtnText}>Clear All</Text>
                 </TouchableOpacity>
@@ -70,7 +61,7 @@ const style = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: wp(3),
         marginHorizontal: wp(2),
-        
+
     },
     cartsListContainer: {
         height: hp(40),
@@ -82,14 +73,14 @@ const style = StyleSheet.create({
         marginVertical: hp(1)
     },
     totalCardsText: {
-        color : 'black',
+        color: 'black',
         fontSize: wp(3),
-        fontFamily : 'Poppins-SemiBold'
+        fontFamily: 'Poppins-SemiBold'
     },
     totalCardsCountText: {
         fontSize: wp(3),
         color: 'red',
-        fontFamily : 'Poppins-SemiBold'
+        fontFamily: 'Poppins-SemiBold'
     },
     totalPriceContainer: {
         width: wp(38),
@@ -100,11 +91,11 @@ const style = StyleSheet.create({
     totalPriceText: {
         color: 'black',
         fontSize: wp(3.4),
-        fontFamily : 'Poppins-Bold',
+        fontFamily: 'Poppins-Bold',
     },
     totalPriceTotalText: {
         fontSize: wp(3.4),
-        fontFamily : 'Poppins-Bold',
+        fontFamily: 'Poppins-Bold',
         color: 'red'
     },
     payNowBtn: {
@@ -116,7 +107,7 @@ const style = StyleSheet.create({
     payNowBtnText: {
         color: 'white',
         alignSelf: 'center',
-        fontFamily : 'Poppins-Bold'
+        fontFamily: 'Poppins-Bold'
     },
     closeBtn: {
         backgroundColor: 'red',
@@ -134,14 +125,14 @@ const style = StyleSheet.create({
         alignItems: 'center',
     },
     successText: {
-        fontFamily : 'Poppins-Regular',
+        fontFamily: 'Poppins-Regular',
         marginTop: hp(2)
     },
-    clearAllBtn : {
-        marginTop : hp(1)
+    clearAllBtn: {
+        marginTop: hp(1)
     },
-    clearAllBtnText : {
-        fontFamily : 'Poppins-Regular',
+    clearAllBtnText: {
+        fontFamily: 'Poppins-Regular',
         textDecorationLine: 'underline'
     }
 })
