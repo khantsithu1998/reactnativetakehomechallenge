@@ -1,21 +1,22 @@
-import { useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { cardsListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
 import CartsList from '../components/CartsList';
 import SuccessIcon from '../assets/icons/SuccessIcon';
 import CancelIcon from '../assets/icons/CancelIcon';
-import { SelectedCardType } from '../types/cardType';
 import useCartCount from '../hooks/cartHooks';
 
 export default function CartsModal({ navigation }: any) {
     const [paySuccess, setPaySuccess] = useState(false)
-    const [totalCard,] = useAtom(totalCartCardsAtom)
-    const [totalPrice,] = useAtom(totalPriceAtom)
     const [cardsList, setCardsList] = useAtom(cardsListAtom);
     const { clearCartCount } = useCartCount()
+
+    const handleClearCart = () => {
+        clearCartCount(cardsList, setCardsList);
+    };
 
     return <Modal transparent={true}>
         <View style={{
@@ -30,19 +31,11 @@ export default function CartsModal({ navigation }: any) {
                 <View style={style.cartsListContainer}>
                     <CartsList />
                 </View>
-                <TouchableOpacity style={style.clearAllBtn} onPress={() => {
-                    clearCartCount(cardsList, setCardsList);
-                }}>
+                <TouchableOpacity style={style.clearAllBtn} onPress={() => handleClearCart()}>
                     <Text style={style.clearAllBtnText}>Clear All</Text>
                 </TouchableOpacity>
-                <View style={style.totalCardsContainer}>
-                    <Text style={style.totalCardsText}>Total Cards</Text>
-                    <Text style={style.totalCardsCountText}>{totalCard}</Text>
-                </View>
-                <View style={style.totalPriceContainer}>
-                    <Text style={style.totalPriceText}>Total Price</Text>
-                    <Text style={style.totalPriceTotalText}>${totalPrice.toFixed(2)}</Text>
-                </View>
+                <TotalCardText />
+                <TotalPriceText />
                 <TouchableOpacity onPress={() => setPaySuccess(true)} style={style.payNowBtn}>
                     <Text style={style.payNowBtnText}>Pay Now</Text>
                 </TouchableOpacity>
@@ -53,6 +46,26 @@ export default function CartsModal({ navigation }: any) {
         </View>
     </Modal>
 }
+
+const TotalPriceText = memo(() => {
+    const totalPrice = useAtomValue(totalPriceAtom)
+
+    return (
+        <View style={style.totalPriceContainer}>
+            <Text style={style.totalPriceText}>Total Price</Text>
+            <Text style={style.totalPriceTotalText}>${totalPrice.toFixed(2)}</Text>
+        </View>
+    )
+})
+
+const TotalCardText = memo(() => {
+    const totalCard = useAtomValue(totalCartCardsAtom)
+
+    return <View style={style.totalCardsContainer}>
+        <Text style={style.totalCardsText}>Total Cards</Text>
+        <Text style={style.totalCardsCountText}>{totalCard}</Text>
+    </View>
+})
 
 const style = StyleSheet.create({
     modalContainer: {
