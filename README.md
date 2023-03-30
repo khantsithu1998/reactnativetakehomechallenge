@@ -23,11 +23,11 @@
   - ✅ Implementing Authentication flow (api doesn't require authentication but you can include authentication header for simple demonstration)
   - ✅ Using react native navigation to navigate login to home page
 - ✅ Card list:
-  - [] Implement search/filter (**optional**):
-    - [] Name
-    - [] Type
-    - [] Rarity
-    - [] Set
+  - [ ] Implement search/filter (**optional**):
+    - [ ] Name
+    - [ ] Type
+    - [ ] Rarity
+    - [ ] Set
   - ✅ Loading/PageSize limit: `12` cards on each api call
   - ✅ Implement `Loadmore` style pagination
 - ✅ Use card `price` data from `cardmarket.prices.*`
