@@ -1,11 +1,11 @@
 import { atom, useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { APIClient, ApiStatus } from '../utils/apiClient';
+import { APIClient } from '../utils/apiClient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { cardsListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
+import { cardsListAtom } from '../utils/atoms';
 import { CardType, SelectedCardType } from '../types/cardType';
-import SearchIcon from '../assets/icons/SearchIcon';
+import SearchIcon from 'assets/icons/SearchIcon';
 import useCartCount from '../hooks/cartHooks';
 import { useQuery } from '@tanstack/react-query';
 

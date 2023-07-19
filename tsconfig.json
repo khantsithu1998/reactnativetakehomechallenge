@@ -1,3 +1,23 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    // Path alias config
+    "baseUrl": ".",
+    "paths": {
+      // This needs to be mirrored in babel.config.js
+      // Components is a directory with sub directories
+      
+      // This needs to be mirrored in babel.config.js
+      "navigation/*": ["src/navigation"],
+      "components/*": ["src/components/*"],
+      "utils/*" : ["src/utils/*"],
+      "hooks/*" : ["src/hooks/*"],
+      "types/*" : ["src/types/*"],
+      "src/*": ["src/*"],
+      "assets/*" : ["assets/*"],
+      // We want to expose the exports of the buttons index file
+      "buttons": ["src/components/buttons/index"]
+    }
+  }
 }

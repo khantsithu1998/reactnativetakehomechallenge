@@ -1,11 +1,11 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar, TextInput } from 'react-native'
+import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import PokemonsList from '../components/PokemonsList';
+import PokemonsList from 'src/components/PokemonsList';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
 import { totalCartCardsAtom } from '../utils/atoms';
-import BasketIcon from '../assets/icons/BasketIcon';
-import PokemonLogo from '../assets/icons/PokemonLogo';
+import BasketIcon from 'assets/icons/BasketIcon';
+import PokemonLogo from 'assets/icons/PokemonLogo';
 
 export default function HomeScreen({ navigation }: any) {
     const [totalCards,] = useAtom(totalCartCardsAtom)
