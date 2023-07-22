@@ -10,6 +10,7 @@ import useCartCount from '../hooks/cartHooks';
 import { useQuery } from '@tanstack/react-query';
 
 export default function PokemonsList() {
+    console.log('list rendering...')
     const [cardsListData, setCardsListData] = useAtom(cardsListAtom);
     // const [apiStatus, setApiStatus] = useState(ApiStatus.Loading);
     const [message, setMessage] = useState('')

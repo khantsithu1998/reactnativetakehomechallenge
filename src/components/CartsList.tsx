@@ -2,11 +2,11 @@
 import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { cardsListAtom, } from '../utils/atoms';
+import { cardsListAtom, } from 'utils/atoms';
 import { SelectedCardType } from '../types/cardType';
-import CartAddIcon from '../assets/icons/CartAddIcon';
-import CartRemoveIcon from '../assets/icons/CartRemoveIcon';
-import useCartCount from '../hooks/cartHooks'
+import CartAddIcon from 'assets/icons/CartAddIcon';
+import CartRemoveIcon from 'assets/icons/CartRemoveIcon';
+import useCartCount from 'src/hooks/cartHooks'
 
 export default function CartsList() {
     const [cardsList,] = useAtom<SelectedCardType[]>(cardsListAtom)

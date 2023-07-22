@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, StatusBar } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import PokemonLogo from '../assets/icons/PokemonLogo';
+import PokemonLogo from 'assets/icons/PokemonLogo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { isAuthenticatedAtom } from '../utils/atoms';
+import { isAuthenticatedAtom } from 'utils/atoms';
 
 export default function LoginScreen({ navigation }: any) {
   const { control, handleSubmit } = useForm();

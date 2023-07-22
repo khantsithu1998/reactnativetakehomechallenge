@@ -10,7 +10,7 @@ import type { PropsWithChildren } from 'react';
 import {
   StyleSheet,
 } from 'react-native';
-import RootStackScreen from './screens/RootStackScreen';
+import RootStackScreen from 'src/screens/RootStackScreen';
 import {
   QueryClient,
   QueryClientProvider,
