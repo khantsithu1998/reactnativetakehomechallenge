@@ -1,15 +1,47 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar } from 'react-native'
+import { View, Text, Button, StyleSheet, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PokemonsList from 'src/components/PokemonsList';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom } from 'jotai';
-import { totalCartCardsAtom } from '../utils/atoms';
+import { cardsListAtom, totalCartCardsAtom } from '../utils/atoms';
 import BasketIcon from 'assets/icons/BasketIcon';
 import PokemonLogo from 'assets/icons/PokemonLogo';
+import React, { useState } from 'react';
+import { usePokemons } from 'hooks/usePokemons';
+import { CardType, SelectedCardType } from 'types/cardType';
 
 export default function HomeScreen({ navigation }: any) {
     const [totalCards,] = useAtom(totalCartCardsAtom)
+   
+    const { data : response, isInitialLoading, error, isError, hasNextPage, fetchNextPage } = usePokemons();
+    const cardsListData : SelectedCardType[] = response && response.pages && response.pages.length > 0 ? response.pages.flatMap((page) => page.data ? page.data.map((item: CardType) => {
+        return { cardType: item, cartCount: 0 };
+    }) : []) : [];
 
+    
+    const pokemonList = () => {
+        if (isError) {
+            return <Text>{'Something went wrong'}</Text>
+        }
+    
+        if (isInitialLoading) return <ActivityIndicator color={'#FDCE29'} size={'large'} />
+
+        if (cardsListData) {
+            return (<View style={styles.listContainer}>
+                
+                <PokemonsList cardsListData={cardsListData} loadMore={loadMore}/>
+            </View>)
+        }
+    
+    }
+
+    const loadMore = () => {
+        if (hasNextPage) {
+            fetchNextPage();
+          }
+    };
+
+    
     return (
         <SafeAreaView style={styles.homeWrapper}>
             <StatusBar
@@ -25,9 +57,8 @@ export default function HomeScreen({ navigation }: any) {
             </View>
 
             {/* <PokemonSearchForm/> */}
-            <View style={styles.listContainer}>
-                <PokemonsList />
-            </View>
+            {pokemonList()}
+            
             {totalCards > 0 ? <TouchableOpacity style={styles.cartBtn} onPress={() => {
                 navigation.navigate('CartsModal')
             }}>

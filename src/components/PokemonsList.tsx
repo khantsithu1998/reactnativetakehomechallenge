@@ -7,44 +7,9 @@ import { cardsListAtom } from '../utils/atoms';
 import { CardType, SelectedCardType } from '../types/cardType';
 import SearchIcon from 'assets/icons/SearchIcon';
 import useCartCount from '../hooks/cartHooks';
-import { useQuery } from '@tanstack/react-query';
 
-export default function PokemonsList() {
+export default function PokemonsList({ cardsListData, loadMore }: { cardsListData: SelectedCardType[], loadMore: () => void }) {
     console.log('list rendering...')
-    const [cardsListData, setCardsListData] = useAtom(cardsListAtom);
-    // const [apiStatus, setApiStatus] = useState(ApiStatus.Loading);
-    const [message, setMessage] = useState('')
-    const [page, setPage] = useState(1)
-    const [isInitialLoading, setIsInitialLoading] = useState(true)
-    const [isPaginationLoading, setIsPaginationLoading] = useState(false)
-    const { data, isLoading, isSuccess, isError } = useQuery(["cardsListData", page], () =>
-        APIClient.fetchData(page)
-    );
-
-    useEffect(() => {
-        if (data && isSuccess) {
-            setIsInitialLoading(false)
-            setIsPaginationLoading(false)
-            setCardsListData((prevCardsListData: SelectedCardType[]) => {
-                const newTypeData = data.data.map((item: CardType) => {
-                    return { cardType: item, cartCount: 0 };
-                });
-                return [...prevCardsListData, ...newTypeData ?? []];
-            });
-        }
-    }, [data, isSuccess]);
-
-
-    const loadMore = () => {
-        setIsPaginationLoading(true)
-        setPage(page + 1);
-    };
-
-    if (isError) {
-        return <Text>{message}</Text>
-    }
-
-    if (isInitialLoading) return <ActivityIndicator color={'#FDCE29'} size={'large'} />
 
     const renderItem = ({ item }: { item: SelectedCardType }) => <Card item={item} />
 
@@ -58,7 +23,7 @@ export default function PokemonsList() {
             onEndReached={loadMore}
             ListFooterComponent={() => {
                 return (<>
-                    {cardsListData.length > 10 && page > 1 ? <ActivityIndicator color={'#FDCE29'} size={'small'} /> : <TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
+                    {cardsListData.length > 10 ? <ActivityIndicator color={'#FDCE29'} size={'small'} /> : <TouchableOpacity style={style.showMoreBtn} onPress={loadMore}>
                         <SearchIcon width={hp(2)} height={hp(2)} />
                         <Text>show more</Text>
                     </TouchableOpacity>}
@@ -69,7 +34,7 @@ export default function PokemonsList() {
                     <Text style={style.emptyViewText}>No data available</Text>
                 </View>
             )}
-            />
+        />
 
     }
     return <></>
@@ -164,18 +129,18 @@ const style = StyleSheet.create({
     showMoreBtn: {
         alignSelf: 'center',
         alignItems: 'center',
-        fontFamily : 'Poppins-Regular',
+        fontFamily: 'Poppins-Regular',
         marginBottom: hp(2),
-       
+
         // marginVertical : hp(10),
     },
-    emptyViewContainer : {
+    emptyViewContainer: {
 
     },
-    emptyViewText : {
+    emptyViewText: {
         alignSelf: 'center',
         alignItems: 'center',
-        fontFamily : 'Poppins-Regular',
+        fontFamily: 'Poppins-Regular',
         marginBottom: hp(2)
     }
 
