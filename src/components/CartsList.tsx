@@ -11,6 +11,7 @@ import useCartCount from 'src/hooks/cartHooks'
 export default function CartsList() {
     const [cardsList,] = useAtom<SelectedCardType[]>(cardsListAtom)
     const selectedCardsList = cardsList.filter((item) => item.cartCount > 0 ?? item)
+    
     const renderItem = ({ item }: { item: SelectedCardType }) => <Cart item={item} />
 
     return cardsList.length > 0 ? <FlatList

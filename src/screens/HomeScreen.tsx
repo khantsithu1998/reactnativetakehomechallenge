@@ -6,17 +6,26 @@ import { useAtom } from 'jotai';
 import { cardsListAtom, totalCartCardsAtom } from '../utils/atoms';
 import BasketIcon from 'assets/icons/BasketIcon';
 import PokemonLogo from 'assets/icons/PokemonLogo';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePokemons } from 'hooks/usePokemons';
 import { CardType, SelectedCardType } from 'types/cardType';
 
 export default function HomeScreen({ navigation }: any) {
     const [totalCards,] = useAtom(totalCartCardsAtom)
-   
-    const { data : response, isInitialLoading, error, isError, hasNextPage, fetchNextPage } = usePokemons();
-    const cardsListData : SelectedCardType[] = response && response.pages && response.pages.length > 0 ? response.pages.flatMap((page) => page.data ? page.data.map((item: CardType) => {
-        return { cardType: item, cartCount: 0 };
-    }) : []) : [];
+    const [cardsListData, setCardsListData] = useAtom(cardsListAtom)
+    const { data : response, isInitialLoading, isError, hasNextPage, fetchNextPage } = usePokemons();
+    // const cardsListData : SelectedCardType[] = response && response.pages && response.pages.length > 0 ? response.pages.flatMap((page) => page.data ? page.data.map((item: CardType) => {
+    //     return { cardType: item, cartCount: 0 };
+    // }) : []) : [];
+
+    useEffect(() => {
+        if (response && response.pages && response.pages.length > 0) {
+          const updatedCardsList = response.pages.flatMap((page) =>
+            page.data ? page.data.map((item: CardType) => ({ cardType: item, cartCount: 0 })) : []
+          );
+          setCardsListData(updatedCardsList);
+        }
+      }, [response]);
 
     
     const pokemonList = () => {
