@@ -1,12 +1,12 @@
-import { atom, useAtom } from 'jotai';
-import { useEffect, useState } from 'react';
-import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { APIClient } from '../utils/apiClient';
+import { useAtom } from 'jotai';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { cardsListAtom } from '../utils/atoms';
-import { CardType, SelectedCardType } from '../types/cardType';
+import { SelectedCardType } from '../types/cardType';
 import SearchIcon from 'assets/icons/SearchIcon';
 import useCartCount from '../hooks/cartHooks';
+import { FlashList } from "@shopify/flash-list";
 
 export default function PokemonsList({ cardsListData, loadMore }: { cardsListData: SelectedCardType[], loadMore: () => void }) {
     console.log('list rendering...')
@@ -15,11 +15,12 @@ export default function PokemonsList({ cardsListData, loadMore }: { cardsListDat
 
     if (cardsListData) {
 
-        return <FlatList
+        return <FlashList
             data={cardsListData}
             renderItem={renderItem}
             keyExtractor={item => item.cardType.id.toString()}
             showsVerticalScrollIndicator={false}
+            estimatedItemSize={200}
             onEndReached={loadMore}
             ListFooterComponent={() => {
                 return (<>

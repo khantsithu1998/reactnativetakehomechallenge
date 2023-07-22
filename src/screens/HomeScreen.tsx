@@ -6,7 +6,7 @@ import { useAtom } from 'jotai';
 import { cardsListAtom, totalCartCardsAtom } from '../utils/atoms';
 import BasketIcon from 'assets/icons/BasketIcon';
 import PokemonLogo from 'assets/icons/PokemonLogo';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { usePokemons } from 'hooks/usePokemons';
 import { CardType, SelectedCardType } from 'types/cardType';
 
@@ -28,21 +28,21 @@ export default function HomeScreen({ navigation }: any) {
       }, [response]);
 
     
-    const pokemonList = () => {
+      const pokemonList = () => {
         if (isError) {
-            return <Text>{'Something went wrong'}</Text>
+          return <Text>{'Something went wrong'}</Text>;
         }
     
-        if (isInitialLoading) return <ActivityIndicator color={'#FDCE29'} size={'large'} />
-
-        if (cardsListData) {
-            return (<View style={styles.listContainer}>
-                
-                <PokemonsList cardsListData={cardsListData} loadMore={loadMore}/>
-            </View>)
-        }
+        if (isInitialLoading) return <ActivityIndicator color={'#FDCE29'} size={'large'} />;
     
-    }
+        if (cardsListData?.length) {
+          return (
+            <View style={styles.listContainer}>
+              <PokemonsList cardsListData={cardsListData} loadMore={loadMore} />
+            </View>
+          );
+        }
+      };
 
     const loadMore = () => {
         if (hasNextPage) {
@@ -106,8 +106,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     listContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         flex: 1,
         zIndex: 0
     },
