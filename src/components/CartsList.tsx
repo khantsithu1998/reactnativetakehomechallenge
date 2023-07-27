@@ -1,20 +1,24 @@
 
-import { View, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useAtom } from 'jotai';
-import { cardsListAtom, } from 'utils/atoms';
+import { useAtom, useAtomValue } from 'jotai';
+import { cardsListAtom, selectedCardsListAtom, } from 'utils/atoms';
 import { SelectedCardType } from '../types/cardType';
 import CartAddIcon from 'assets/icons/CartAddIcon';
 import CartRemoveIcon from 'assets/icons/CartRemoveIcon';
 import useCartCount from 'src/hooks/cartHooks'
+import { FlashList } from '@shopify/flash-list';
+import { useState } from 'react';
 
 export default function CartsList() {
     const [cardsList,] = useAtom<SelectedCardType[]>(cardsListAtom)
-    const selectedCardsList = cardsList.filter((item) => item.cartCount > 0 ?? item)
-    
+    const selectedCardsList = useAtomValue(selectedCardsListAtom);
+
+    console.log('selected cards list ', selectedCardsList)
+
     const renderItem = ({ item }: { item: SelectedCardType }) => <Cart item={item} />
 
-    return cardsList.length > 0 ? <FlatList
+    return selectedCardsList.length > 0 ? <FlatList
         data={selectedCardsList}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
@@ -73,8 +77,7 @@ const styles = StyleSheet.create({
     cartContainer: {
         flexDirection: 'row',
         marginVertical: hp(2),
-        width: wp(80)
-        // backgroundColor: 'red'
+        width: wp(80),
     },
     midContainer: {
         width: wp(40)
@@ -115,12 +118,12 @@ const styles = StyleSheet.create({
     priceText: {
         color: '#1D1C1C',
         fontFamily: 'Poppins-Regular',
-        marginBottom : hp(2)
+        marginBottom: hp(2)
     },
     pricePerText: {
         color: '#298BFD',
         fontFamily: 'Poppins-Bold',
-        fontSize : hp(2)
+        fontSize: hp(2)
     },
     cartCountContainer: {
         flexDirection: 'row'
