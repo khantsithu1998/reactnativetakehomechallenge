@@ -3,7 +3,7 @@ import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useAtom, useAtomValue } from 'jotai';
-import { cardsListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
+import { cardsListAtom, selectedCardsListAtom, totalCartCardsAtom, totalPriceAtom } from '../utils/atoms';
 import CartsList from 'src/components/CartsList';
 import SuccessIcon from 'assets/icons/SuccessIcon';
 import CancelIcon from 'assets/icons/CancelIcon';
@@ -12,6 +12,7 @@ import useCartCount from '../hooks/cartHooks';
 export default function CartsModal({ navigation }: any) {
     const [paySuccess, setPaySuccess] = useState(false)
     const [cardsList, setCardsList] = useAtom(cardsListAtom);
+    const selectedCardsList = useAtomValue(selectedCardsListAtom);
     const { clearCartCount } = useCartCount()
 
     const handleClearCart = () => {
@@ -29,7 +30,7 @@ export default function CartsModal({ navigation }: any) {
                 <Text style={style.successText}>Payment Success</Text>
             </View> : <>
                 <View style={style.cartsListContainer}>
-                    <CartsList />
+                    <CartsList selectedCardsList={selectedCardsList}/>
                 </View>
                 <TouchableOpacity style={style.clearAllBtn} onPress={() => handleClearCart()}>
                     <Text style={style.clearAllBtnText}>Clear All</Text>

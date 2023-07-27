@@ -8,13 +8,11 @@ import CartAddIcon from 'assets/icons/CartAddIcon';
 import CartRemoveIcon from 'assets/icons/CartRemoveIcon';
 import useCartCount from 'src/hooks/cartHooks'
 
-export default function CartsList() {
-    const selectedCardsList = useAtomValue(selectedCardsListAtom);
+export default function CartsList({ selectedCardsList } : { selectedCardsList : SelectedCardType[]}) {
 
     const renderItem = ({ item }: { item: SelectedCardType }) => <Cart item={item} />
 
     return selectedCardsList.length > 0 ? <FlatList
-        // estimatedItemSize={200}
         data={selectedCardsList}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
