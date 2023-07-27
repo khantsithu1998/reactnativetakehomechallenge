@@ -7,18 +7,14 @@ import { SelectedCardType } from '../types/cardType';
 import CartAddIcon from 'assets/icons/CartAddIcon';
 import CartRemoveIcon from 'assets/icons/CartRemoveIcon';
 import useCartCount from 'src/hooks/cartHooks'
-import { FlashList } from '@shopify/flash-list';
-import { useState } from 'react';
 
 export default function CartsList() {
-    const [cardsList,] = useAtom<SelectedCardType[]>(cardsListAtom)
     const selectedCardsList = useAtomValue(selectedCardsListAtom);
-
-    console.log('selected cards list ', selectedCardsList)
 
     const renderItem = ({ item }: { item: SelectedCardType }) => <Cart item={item} />
 
     return selectedCardsList.length > 0 ? <FlatList
+        // estimatedItemSize={200}
         data={selectedCardsList}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
